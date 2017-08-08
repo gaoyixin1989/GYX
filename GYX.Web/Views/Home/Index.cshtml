@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "主页";
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+@section Scripts{
+    <script>
+        $(function () {
+            initMenu();//初始化菜单
+        });
+
+        //初始化菜单
+        function initMenu() {
+            $('#MenuList').empty();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/System/SysMenu/GetTreeData",
+                data: { IsUse: true, IsShow: true },
+                success: function (data) {
+
+                    $.each(data, function (i, item) {
+                        var firstNode = $('<div title="' + item.attributes.MenuText + '" data-options="selected:true" style="overflow:auto;"><div class="left-nav"></div></div>');
+                        if (i == 0) firstNode.attr('data-options', 'selected:true');
+
+                        //loopAddMenu(firstNode.children("div:first-child"), item.children);
+                        loopAddMenu(firstNode.find('.left-nav:first'), item.children);
+                        $('#MenuList').append(firstNode);
+                    });
+
+                    $('#MenuList').accordion({
+                        animate: false,
+                        fit: true
+                    });
+
+                },
+                error: function () {
+                    $.messager.alert('提示', '出错', 'error');
+                }
+            });
+
+        }
+
+        //循环加载菜单
+        function loopAddMenu(obj, data) {
+            if (data == null || data.length == 0)
+                return;
+            var curUL = $('<ul></ul>');
+            $.each(data, function (i, item) {
+                var curLi = $('<li><a href="javascript:void(0);" >' + item.attributes.MenuText + '</a></li>');
+                curLi.children("a:first-child").click(function () {
+                    clickMenu(this, item);
+                });
+                loopAddMenu(curLi, item.children);
+                curUL.append(curLi);
+            })
+            obj.append(curUL);
+        }
+
+        //菜单点击事件
+        function clickMenu(obj, data) {
+            if (!!data.children) {
+                $(obj).toggleClass('show');
+                $(obj).next().slideToggle();
+            }
+            if (!!data.attributes.MenuUrl) {
+                $('.left-nav a.current').removeClass('current');
+                $(obj).addClass('current');
+                //alert(data.attributes.MenuUrl);//打开菜单页面
+                addTab({ id: 'menu_' + data.attributes.Id, text: data.attributes.MenuText, url: data.attributes.MenuUrl });
+            }
+
+        }
+
+        //添加tab页
+        function addTab(data) {
+            var tempTab = $('#tabDiv').tabs('getTabById', data.id);
+            if (tempTab == null) {//该tab页未存在，新增
+                $('#tabDiv').tabs('add', {
+                    id: data.id,
+                    title: data.text,
+                    closable: true,
+                    //cache: false,
+                    //href: data.url
+                    content: '<iframe  name="' + data.id + '" src="' + data.url + '" style="width:100%;height:100%;"></iframe>'//frameborder="0" scrolling="no"
+                });
+            }
+            else {//该tab页已经存在，选中该tab页
+                $('#tabDiv').tabs('select', $('#tabDiv').tabs('getTabIndex', tempTab));
+            }
+        }
+    </script>
+}
+@section Css{
+    <link href="~/Content/Css/Skins/Blue/homeIndex.css" rel="stylesheet" />
+    <style>
+        .easyui-tabs .tabs-panels .panel .panel-body {
+            overflow: hidden;
+        }
+    </style>
+}
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',split:false" style="height:50px;">
+        <div style="text-align:center;vertical-align:middle;width:100%;height:100%;font-size:20px; line-height:50px;">
+            My System>
+        </div>
+    </div>
+    <div data-options="region:'west',title:'导航菜单',split:false" style="width:200px;">
+        <div id="MenuList">
+            @*<div title="Title1" data-options="selected:true" style="overflow:auto;">
+                    <div class="left-nav">
+                        <ul>
+                            <li>
+                                <a href="javascript:void(0);" onclick="clickMenu(this)">标题标题1</a>
+                                <ul>
+                                    <li>
+                                        <a href="javascript:void(0);" onclick="clickMenu(this)">标题标题11</a>
+                                        <ul>
+                                            <li><a href="javascript:void(0);" onclick="clickMenu(this)">标题标题111</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="javascript:void(0);" onclick="clickMenu(this)">标题标题12</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="javascript:void(0);" onclick="clickMenu(this)">标题标题2</a></li>
+                        </ul>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+    <div data-options="region:'center'">
+        <div id="ddd"></div>
+        <div id="tabDiv" class="easyui-tabs" data-options="fit:true">
+        </div>
+    </div>
+</div>
+

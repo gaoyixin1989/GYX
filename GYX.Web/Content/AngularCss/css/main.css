@@ -1,0 +1,382 @@
+﻿@charset "utf-8";
+.main-mod{ width:100%; height:auto; overflow:hidden; position:relative; background-color:#fff;}
+.main-mod .towards{ position:absolute; left:-1px; top:0px; width:14px; height:39px; border:1px solid #ccc;  line-height:38px; text-align:center; background:#f9f9f9; color:#999; z-index:11; cursor:pointer;}
+.main-mod .towards:hover{ border:1px solid #0085d1; background:#0085d1; color:#fff;}
+.main-mod .main-mod-left{ width:180px; height:auto; overflow:hidden; position:absolute; left:0px; top:0px; /*background:url(../images/l_nav_bg.jpg) left top repeat-y;*/min-height: 500px;}
+.main-mod .main-mod-right{ margin-left:180px; position:relative; top:0px; margin-top:0px; left:0px;}
+.left-nav-mod{ margin-bottom:1px; }
+.left-nav-mod .left-nav{ width:100%; height:auto; overflow:hidden; font-size:13px; color:#666; text-indent:40px;}
+.left-nav-mod .left-nav span{ display:block; width:170px; height:35px; line-height:35px; overflow:hidden; background:url(../images/title_bg.jpg) left bottom repeat-x; position:relative; border:1px solid #d5d5d5; border-top:0px;}
+.left-nav-mod .left-nav span:hover{cursor:pointer;}
+.left-nav-mod .left-nav span.current{ color:#0085d1;}
+.left-nav-mod .left-nav span b{ display:block; width:10px; height:10px; overflow:hidden; position:absolute; right:20px; top:14px; background:url(../images/l_nav_b_bg_a.png) no-repeat;}
+.left-nav-mod .left-nav span b.minus{ background:url(../images/l_nav_b_bg_m.png) no-repeat;}
+.left-nav-mod .left-nav span i{ display:block; width:24px; height:24px; overflow:hidden; position:absolute; left:10px; top:5px; background:url(../images/l_nav_span_bg.png) no-repeat;}
+.left-nav-mod .left-nav ul{ display:none; width:170px; background-color:#F9F9F9; text-indent:15px;}
+.left-nav-mod .left-nav ul li{ width:100%; line-height:40px; overflow:hidden; margin-left:15px;}
+.left-nav-mod .left-nav .firstUL{border:1px solid #d5d5d5; border-top:0px; border-left:0px; border-right:0px; }
+
+.left-nav-mod .left-nav span.span-1 i{ background-position:0px 0px;}
+.left-nav-mod .left-nav span.span-2 i{ background-position:0px -24px;}
+.left-nav-mod .left-nav span.span-3 i{ background-position:0px -48px;}
+.left-nav-mod .left-nav span.span-4 i{ background-position:0px -72px;}
+.left-nav-mod .left-nav span.span-5 i{ background-position:0px -96px;}
+.left-nav-mod .left-nav span.span-6 i{ background-position:0px -120px;}
+.left-nav-mod .left-nav span.span-7 i{ background-position:0px -144px;}
+.left-nav-mod .left-nav span.span-8 i{ background-position:0px -168px;}
+.left-nav-mod .left-nav span.span-9 i{ background-position:0px -192px;}
+.left-nav-mod .left-nav span.span-10 i{ background-position:0px -216px;}
+.left-nav-mod .left-nav span.span-11 i{ background-position:0px -240px;}
+
+.left-nav-mod .left-nav span.span-1.current i{ background-position:-24px 0px;}
+.left-nav-mod .left-nav span.span-2.current i{ background-position:-24px -24px;}
+.left-nav-mod .left-nav span.span-3.current i{ background-position:-24px -48px;}
+.left-nav-mod .left-nav span.span-4.current i{ background-position:-24px -72x;}
+.left-nav-mod .left-nav span.span-5.current i{ background-position:-24px -96px;}
+.left-nav-mod .left-nav span.span-6.current i{ background-position:-24px -120px;}
+.left-nav-mod .left-nav span.span-7.current i{ background-position:-24px -144px;}
+.left-nav-mod .left-nav span.span-8.current i{ background-position:-24px -168px;}
+.left-nav-mod .left-nav span.span-9.current i{ background-position:-24px -192px;}
+.left-nav-mod .left-nav span.span-10.current i{ background-position:-24px -216px;}
+.left-nav-mod .left-nav span.span-11.current i{ background-position:-24px -240px;}
+
+.left-nav-mod .left-nav ul li a{ display:block; width:100%; height:35px; line-height:35px; overflow:hidden; color:#666; background:url(../images/l_nav_li_a_bg.png) 0px 12px no-repeat;}
+.left-nav-mod .left-nav ul li a:hover{ background:url(../images/l_nav_li_a_bg2.png) 0px 12px no-repeat; color:#0085d1; font-weight:bold;}
+
+
+
+.public-main-title{ width:100%; height:30px; line-height:30px; border-bottom:1px solid #D5D5D5; padding-top:10px; padding-left:10px;}
+.public-main-title a{
+     display:block;
+     width:auto; height:30px; 
+     float:left; line-height:30px; 
+     border:1px solid #D5D5D5; 
+     border-bottom:0px; 
+     border-radius:3px 3px 0px 0px; 
+     padding:0px 10px; font-size:14px;  
+     margin-left:10px; 
+     position:relative; 
+     color:#666;
+     cursor: pointer; 
+}
+.public-main-title a.current{ background:rgb(255,255,255);color:#0085d1;}
+.public-main-title a.current b {background:url(../images/l_close_current.png) no-repeat;}
+
+.public-main-title a b{ 
+    position:absolute;
+    right:2px; 
+    top:2px; 
+    display:block; 
+    width:7px; 
+    height:7px; 
+    background:url(../images/l_close.png) no-repeat;
+    cursor: pointer; 
+}
+
+
+.the-operation1{ height:inherit; overflow:hidden; margin-top:0px; float:left;width:50%;}
+
+.the-operation1 ul li{ float:left; margin-left:20px;white-space:nowrap;margin-top:5px;}
+.the-operation1 ul li a{ display:block; width:auto; height:26px; line-height:26px; border:1px solid #c5c5c5; border-radius:3px; color:#4c5373; background:#efefef; position:relative; padding:0px 10px 0px 25px; }
+.the-operation1 ul li a:hover{ color:#fff; background:#0085d1; border:1px solid #0085d1;}
+.the-operation1 ul li a i{ display:block; width:10px; height:10px; overflow:hidden; position:absolute; left:6px; top:8px; background:url(../images/cz_b.png) no-repeat;}
+.the-operation1 ul li a.lia-1 i{ background-position:0px 0px;}
+.the-operation1 ul li a.lia-1:hover i{ background-position:-10px 0px;}
+.the-operation1 ul li a.lia-2 i {background-position:0px -10px;}
+.the-operation1 ul li a.lia-2:hover i{ background-position:-10px -10px;}
+.the-operation1 ul li a.lia-3 i{ background-position:0px -20px;}
+.the-operation1 ul li a.lia-3:hover i{ background-position:-10px -20px;}
+.the-operation1 ul li a.lia-4 i{ background-position:0px -30px;}
+.the-operation1 ul li a.lia-4:hover i{ background-position:-10px -30px;}
+.the-operation1 ul li a.lia-5 i{ background:url(../images/edit1.png) no-repeat;}
+.the-operation1 ul li a.lia-5:hover i{ background:url(../images/edit2.png) no-repeat;}
+
+
+
+.the-operation1 ul li a.btn-add i{ background-position:0px 0px;}/*添加*/
+.the-operation1 ul li a.btn-add:hover i{ background-position:-10px 0px;}
+.the-operation1 ul li a.btn-ok i {background-position:0px -10px;}/*确认、提交*/
+.the-operation1 ul li a.btn-ok:hover i{ background-position:-10px -10px;}
+.the-operation1 ul li a.btn-del i{ background-position:0px -20px;}/*删除*/
+.the-operation1 ul li a.btn-del:hover i{ background-position:-10px -20px;}
+.the-operation1 ul li a.btn-none i{ background-position:0px -30px;}/*未定义的一个图标*/export
+.the-operation1 ul li a.btn-none:hover i{ background-position:-10px -30px;}  
+.the-operation1 ul li a.btn-export i{ background-position:0px -40px;}/*导出*/
+.the-operation1 ul li a.btn-export:hover i{ background-position:-10px -40px;}  
+.the-operation1 ul li a.btn-import i{ background-position:0px -50px;}/*导入*/
+.the-operation1 ul li a.btn-import:hover i{ background-position:-10px -50px;}  
+.the-operation1 ul li a.btn-edit i{ background-position:0px -60px;}/*编辑*/
+.the-operation1 ul li a.btn-edit:hover i{ background-position:-10px -60px;}  
+.the-operation1 ul li a.btn-find i{ background-position:0px -70px;}/*查找、查看*/
+.the-operation1 ul li a.btn-find:hover i{ background-position:-10px -70px;}  
+.the-operation1 ul li a.btn-stars i{ background-position:0px -80px;}/*评价*/
+.the-operation1 ul li a.btn-stars:hover i{ background-position:-10px -80px;}  
+.the-operation1 ul li a.btn-print i{ background-position:0px -90px;}/*打印*/
+.the-operation1 ul li a.btn-print:hover i{ background-position:-10px -90px;}  
+.the-operation1 ul li a.btn-down i{ background-position:0px -100px;}/*下载*/
+.the-operation1 ul li a.btn-down:hover i{ background-position:-10px -100px;}  
+.the-operation1 ul li a.btn-set i{ background-position:0px -110px;}/*设置*/
+.the-operation1 ul li a.btn-set:hover i{ background-position:-10px -110px;}  
+.the-operation1 ul li a.btn-back i{ background-position:0px -120px;}/*返回*/
+.the-operation1 ul li a.btn-back:hover i{ background-position:-10px -120px;} 
+ 
+
+
+.the-operation{ width:100%; height:40px; overflow:hidden; margin-top:0px;background-color:#DFECFA}
+.the-operation div {float:right;line-height:30px;padding:5px 20px 5px 5px}
+.the-operation ul li{ float:left; margin-left:20px;}
+.the-operation ul li a{ display:block; width:auto; height:26px; line-height:26px; border:1px solid #c5c5c5; border-radius:3px; color:#4c5373; background:#efefef; position:relative; padding:0px 10px 0px 25px; }
+.the-operation ul li a:hover{ border:1px solid #0085d1; color:#fff; background:#0085d1;}
+.the-operation ul li a i{ display:block; width:10px; height:10px; overflow:hidden; position:absolute; left:10px; top:8px; background:url(../images/cz_b.png) no-repeat;}
+.the-operation ul li a.a-1 i{ background-position:0px 0px;}
+.the-operation ul li a.a-1:hover i{ background-position:-10px 0px;}
+.the-operation ul li a.a-2 i {background-position:0px -10px;}
+.the-operation ul li a.a-2:hover i{ background-position:-10px -10px;}
+.the-operation ul li a.a-3 i{ background-position:0px -20px;}
+.the-operation ul li a.a-3:hover i{ background-position:-10px -20px;}
+.the-operation ul li a.a-4 i{ background-position:0px -30px;}
+.the-operation ul li a.a-4:hover i{ background-position:-10px -30px;}
+
+.search-mod{ overflow:visible; line-height:30px; padding:10px 20px 5px 10px}
+.search-mod .ui-input{ float:left; margin-right:30px;}
+.search-mod .ui-input span{ float:left;}
+.search-mod .ui-input .selectdrapdown{ float:left; margin-right:10px; }
+.search-mod .ui-input .selectdrapdown .cell-input{width:100px; height:26px;  border:1px solid #d9dce5; background:  url("../images/selectdrapdown-down.png") no-repeat  scroll right center transparent;}
+.search-mod .ui-input .cell-input-data{ width:100px;}
+.search-mod .ui-input .icon-data{ position:relative; left:-20px; /*top:4px;*/ color:#327fc7; font-size:16px; width:0px;}
+.search-mod .ui-input .cell-btn-blue{  height:26px; line-height:26px; padding:0px 15px;}
+
+
+
+
+.public-table-main{ padding:10px 20px 10px 10px; overflow-x:auto;}/*min-height:330px;*/
+.public-table-main table{ width:100%; background:#fff; border:1px solid #eaeaea; border-width:1px 0px 0px 1px; border-collapse:collapse;empty-cells:show;}
+.public-table-main table tr th{ padding:7px; border:1px solid #eaeaea; border-width:0px 1px 1px 0px; text-align:center;white-space: nowrap;}
+.public-table-main table tr td{ padding:5px; border:1px solid #eaeaea; border-width:0px 1px 1px 0px; text-align:center;white-space: nowrap;}
+.public-table-main table tr td .operation-btn a{ color:#1167ab; padding:0px 8px; /*text-decoration:underline;*/}
+.public-table-main table tr td .operation-btn a:hover{ color:#F30;}
+
+.main-flip{ padding:5px 20px 10px 5px; min-height:35px; }
+/*.main-flip div{ float:right;}*/
+/*.main-flip div a.a-1{ cursor: pointer;background:#b9becf; color:#fff; display:inline-block; line-height:30px; padding:0px 10px; border-radius:3px; margin-left:10px;}
+.main-flip div a.a-1:hover{ cursor: pointer;background:#1167ab;}
+.main-flip div span{ padding:0px 10px;}
+.main-flip div input{ width:40px; padding:0px 5px; height:28px; line-height:28px; border:1px solid #eaeaea; margin:0px 5px; vertical-align:bottom;}
+.main-flip div a.cell-btn-blue{ line-height:30px; line-height:30px; padding:0px 10px;}*/
+
+
+
+
+/*投票start*/
+.the-question{ padding:0px;}
+.the-question table tr th{ font-weight:normal; text-align:left; font-size:14px; color:#0085d1;}
+.the-question table tr td{ font-size:12px; color:#666; padding:10px 0px; padding-right:40px;width :25%}
+
+.question-list{ padding:20px; background:#fbfbfb;}
+.question-list ol{ margin:0px; padding:0px;}
+.question-list ol li{ margin-bottom:10px;}
+.question-list ol li table{ width:100%;}
+.question-list ol li table tr th{ font-weight:normal; padding:5px 0px; font-size:14px; color:#666; text-align:left;}
+.question-list ol li table tr th span{ color:#999;}
+.question-list ol li table tr td{ padding:5px 0px; font-size:12px; color:#666; width:30%;}
+.question-list2{ position:relative; padding-bottom:50px;}
+.question-list2 ol li table tr td{ width:166px;}
+.question-list2 ol li table tr td .s-btn{ float:right; margin-left:15px;}
+.question-list ol li table tr td input{ vertical-align:middle;}
+.question-list ol li table tr td span{ vertical-align:middle;}
+.question-list ol li table tr td textarea{ border:1px solid #d5d5d5; height:30px; line-height:30px; min-height:30px; padding:0px 10px; width:94%; font-size:12px; color:#999; font-family:"Microsoft YaHei"; resize: none;}
+
+.the-btn{ min-width:100px; height:38px; line-height:38px; overflow:hidden; display:inline-block; border:1px solid #d5d5d5; text-align:center; font-size:16px; color:#666; border-radius:5px; margin:20px 0px; background:url(../images/the_btn_bg.jpg) left bottom repeat-x;}
+.the-btn:hover{ background:#0085d1; color:#fff; border:1px solid #0085d1;}
+
+.determine-btn{ min-width:100px; height:38px; line-height:38px; overflow:hidden; display:inline-block; border:1px solid #0085d1; text-align:center; font-size:16px; color:#fff; border-radius:5px; margin:20px 0px; background:#0085d1; margin:0px 10px;}
+.determine-btn:hover{ color:#fff; background:#027bc1; border:1px solid #027bc1;}
+.cancel-btn{ min-width:100px; height:38px; line-height:38px; overflow:hidden; display:inline-block; border:1px solid #d5d5d5; text-align:center; font-size:16px; color:#666; border-radius:5px; margin:20px 0px; background:url(../images/the_btn_bg.jpg) left bottom repeat-x; margin:0px 10px;}
+.cancel-btn:hover{ background:#d5d5d5; color:#666; border:1px solid #d5d5d5;}
+
+.p-title{ display:block; width:100%; height:auto; overflow:hidden; font-size:14px; color:#0085d1;}
+
+.p-table{ width:100%; margin:10px auto; position:relative;}
+.p-table table{ width:100%;}
+.p-table table tr td{ text-align:right; padding:5px 0px; } 
+.p-table table tr td span{ color:#666; vertical-align:middle;}
+.basic-set .p-table table tr td input{ width:90%; padding:0px; vertical-align:middle; padding:0px 4%;}
+.subject-management .p-table table tr td input{ width:96%; padding:0px; vertical-align:middle; padding:0px 2%;}
+.basic-set{ margin-bottom:20px; position:relative;}
+.subject-management { position:relative;}
+.subject-management{ margin-bottom:20px;}
+.s-layer{ min-height:30px; margin:10px 20px; overflow:hidden;}
+.s-layer strong{ display:inline-block; font-weight:normal; color:#666; line-height:30px; float:left;}
+.s-layer span{ float:right;}
+.p-table .cell-input{ width:280px;}
+.p-table .selectdrapdown{ margin-right:0px; text-align:left;}
+/*.p-table .selectdrapdown.open .cell-input{ background: #fff url("../images/selectdrapdown-up.png") no-repeat scroll 276px center;}*/
+.p-table .selectdrapdown .cell-input{height:26px;width:180px; border:1px solid #d9dce5; background:  url("../images/selectdrapdown-down.png") no-repeat  scroll right center transparent;}
+.s-btn{ display:inline-block; border:1px solid #d5d5d5; height:28px; line-height:28px; overflow:hidden; padding:0px 10px; font-size:12px; color:#666; border-radius:5px; margin-left:10px;}
+.s-btn i{ display:inline-block; width:13px; height:13px; margin-right:8px; margin-bottom:4px; background:url(../images/s_btn.png) no-repeat; vertical-align:middle;}
+.s-btn i.i-1{ background-position:-13px -13px;}
+.s-btn:hover i.i-1{ background-position:0px -13px;}
+.s-btn i.i-2{ background-position:-13px 0px;}
+.s-btn:hover i.i-2{ background-position:0px 0px;}
+
+.s-set{ margin-top:40px;}
+.s-set .t-area{ padding:0px 20px;}
+.s-set .t-area textarea{ border:1px solid #d5d5d5; height:100px; line-height:30px; min-height:30px; padding:0px 10px; width:97%; font-size:12px; color:#333; font-family:"Microsoft YaHei"; resize: none;}
+
+.p-20{ padding:20px;}
+.p-20 a{ margin-right:20px;}
+
+.voting-list{ width:100%; padding:20px 0px; position:relative;}
+.no-padding{ width:100%; padding:16px 0px; padding-top:26px; position:relative; *padding:0px;}
+.voting-question{ font-size:14px; color:#666; display:block;}
+.voting-question-infor{ width:100%; padding-top:35px;}
+.voting-question-infor .div-1{ width:100%; position:relative;}
+.voting-question-infor .div-1 .div-1-1{ width:auto; height:8px; overflow:hidden; background:#e5e5e5; border-radius:5px; margin-right:50px; }
+.voting-question-infor .div-1 .div-1-1 b{ display:block; width:auto; height:8px; border-radius:5px; background:#0085d1; }
+.voting-question-infor .div-1 .span-1{ position:absolute; right:0px; top:-5px;}
+.voting-question-infor .div-1 .div-1-2{ position:absolute; top:-32px; right:40px;}
+.voting-question-infor .div-1 .div-1-2 div{ position:relative; background:#fff; border:1px solid #d5d5d5; height:20px; line-height:20px; overflow:visible; padding:0px 10px; color:#0085d1;float:left;margin-left:8px;}
+.voting-question-infor .div-1 .div-1-2 div i{ display:block; width:16px; height:8px; overflow:hidden; background:url(../images/c_bg.jpg) no-repeat; position:absolute; bottom:-8px; left:40%;}
+
+.voting-question-infor2 ul li{ width:49.5%; float:left;}
+.voting-question-infor2 ul{ clear:both; padding-top:40px; *padding-top:0px;}
+.voting-question-infor2 ul:first-child{ padding-top:0px;}
+
+.s-tip{ padding:20px; text-align:center;}
+.s-tip .tip{ font-size:16px; color:#666; display:inline-block; padding:20px 0px; margin-bottom:15px;}
+.s-tip .tip i{ display:inline-block; width:34px; height:34px; overflow:hidden; background:url(../images/gt.png) no-repeat; margin-right:10px; vertical-align:middle;}
+
+.add-question{ padding:20px;}
+.add-question .p-table2{ clear:both; padding:5px 0px;}
+.add-question .p-table2 table{}
+.add-question .p-table2 table tr th{ font-weight:normal; font-size:14px; color:#666;}
+.add-question .p-table2 table tr td{ font-size:14px; color:#999;}
+.add-question .p-table2 table tr td input{ vertical-align:middle; margin-left:5px;}
+.add-question .p-table2 table tr td span.span-1{ vertical-align:middle; color:#666; padding-right:60px;}
+
+.fill-in{ padding-top:10px;}
+.fill-in.span-1{ font-size:14px; color:#666; display:block; width:100%;}
+.fill-in-infor{ padding-top:10px;}
+.fill-in-infor li{ height:45px;}
+.fill-in-infor li strong{ float:left; display:inline-block; width:40px; height:26px; line-height:26px; text-align:center; border:1px solid #d9dce5; border-right:0px; color:#0085d1; background:url(../images/title_bg.jpg) left bottom repeat-x; font-weight:normal;}
+.fill-in-infor li .ui-input{ top:0px; float:left;}
+.fill-in-infor li .cell-input{ width:510px;}
+.fill-in .add-btn{  min-width:80px; height:28px; line-height:28px; overflow:hidden; display:inline-block; border:1px solid #d5d5d5; text-align:center; font-size:14px; color:#666; border-radius:5px; margin:0px; background:url(../images/the_btn_bg.jpg) left bottom repeat-x;}
+.fill-in .add-btn:hover{ border:1px solid #0085d1;  background:#0085d1; color:#fff;}
+.qr{ text-align:center; margin-top:20px;}
+
+  .memberEdit tr th {
+            width: 50px;
+        }
+
+        .memberEdit tr td div {
+            max-width: 300px;
+            float: left;
+        }
+
+        .memberEdit tr td a {
+            margin-left: 15px;
+            text-decoration: underline;
+            color: #1167AB;
+        }
+
+            .memberEdit tr td a:hover {
+                color: #F30;
+            }
+
+        .divOverflow {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+         .voteSelectedAnsers{
+            margin:2px !important;
+            line-height:20px;
+        } 
+        
+        fieldset {
+            padding: 0;
+            margin: 18px;
+            border: 0;
+        }
+
+        legend {
+            display: block;
+            width: 30%;
+            padding: 0;
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 30px;
+            color: #333333;
+            border: 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+            legend small {
+                font-size: 15px;
+                color: #999999;
+            }
+
+        /*部门*/
+        .listSelect {
+            position: relative;
+            width: 220px;
+            height: 300px;
+            overflow: auto;
+            border: 1px solid #eaeaea;
+            background-color: #fff;
+            margin: 0px 10px 10px 0px;
+            float: left;
+            outline: none;
+        }
+
+        .btnDiv a {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /*问题列表*/
+
+        .radio_out .radio_in {
+            display: inline-block;
+            width: 24%;
+            margin: 5px 0;
+            vertical-align: top;
+            float:left;
+        }
+
+        .question-list2 ol li table tr td.radio_out {
+            width: 70%;
+            padding: 0;
+        }
+
+            .question-list2 ol li table tr td.radio_out .fll {
+                float: left;
+            }
+                .question-list2 ol li table tr td.radio_out .fll input {
+                height:13px;width:13px;
+                }
+
+            .question-list2 ol li table tr td.radio_out .fll1 {
+                width: 88%;
+                margin-top: -2px;
+                margin-left: 2px;
+                line-height:16px;
+            }
+
+        .question-Title {
+            color: #666 !important;
+        }
+
+    
+
+        .date-input {
+            width: 165px !important;
+        }
+        /*投票end*/
+/*******附件列表 Start  *******/
+.attachemnt-table{width:450px; background:#fff; border:1px solid #eaeaea; border-width:1px 1px 0px 1px; border-collapse:collapse;empty-cells:show;}
+.attachemnt-table table tr th{padding:7px; border:1px solid #eaeaea; border-width:0px 1px 1px 0px; text-align:center;white-space: nowrap; }
+.attachemnt-table table tr td{ padding:5px; border:1px solid #eaeaea; border-width:0px 1px 1px 0px; text-align:center;white-space: nowrap;}
+/*******附件列表  End   *********/

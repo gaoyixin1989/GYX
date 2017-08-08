@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "用户编辑";
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+@section Scripts{
+    <script>
+        var id = '@ViewData["id"]';
+
+        $(function () {
+            var isInit = false;
+            ajaxPost({//是否启用
+                url: '/System/SysDict/GetDictByCode?strCode=UseState',
+                success: function (result) {
+                    $('#IsUse').html(createRadioHtml({ data: result, name: 'IsUse', hasDefault: true }));
+                    isInit = true;
+                }
+            });
+
+            var getData = function () {
+                setTimeout(function () {
+                    if (isInit) {
+                            ajaxPost({//是否启用
+                                url: '/System/SysUser/GetDataById',
+                                data: { id: id },
+                                success: function (data) {
+                                    $("#UIForm").form('load', data);
+                                }
+                            });
+
+                    }
+                    else {
+                        getData();
+                    }
+                }, 100);
+
+            }
+
+            if (!!id) {
+                getData();
+            }
+
+        });
+
+
+        function saveData() {
+            var temp = { isSuccess: false }
+            if (!$("#UIForm").form("validate")) {
+                return false;
+            }
+            var dataForSave = $("#UIForm").formtojsonObj();
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/System/SysUser/Save",
+                data: dataForSave,
+                async: false,
+                success: function (data) {
+                    temp = data;
+                },
+                error: function () {
+                    temp.message = "ajax出错";
+                }
+            })
+            return temp;
+        }
+    </script>
+}
+
+@section Css{
+    <style>
+    </style>
+}
+
+<form id="UIForm">
+    <input id="Id" name="Id" class="hidden" />
+    <table class="tableList">
+        <tr>
+            <th>用户名：</th>
+            <td><input type="text" id="UserName" name="UserName" class="easyui-validatebox input_text" data-options="required:true" /></td>
+        </tr>
+        <tr>
+            <th>真实姓名：</th>
+            <td><input type="text" id="RealName" name="RealName" class="input_text" /></td>
+        </tr>
+        <tr>
+            <th>是否启用：</th>
+            <td id="IsUse">
+                <label>
+                    <input id="IsUse1" type="radio" name="IsUse" value="true" /><span>是</span>
+                </label>
+                <label>
+                    <input id="IsUse2" type="radio" name="IsUse" value="false" /><span>否</span>
+                </label>
+            </td>
+        </tr>
+        <tr><th>备注：</th><td><textarea id="Remark" name="Remark" style="width:95%; height:80px;"></textarea></td></tr>
+    </table>
+</form>
+

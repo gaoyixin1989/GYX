@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/AngularCss/css/public.css" rel="stylesheet" />
+    <link href="~/Content/AngularCss/font/iconfont.css" rel="stylesheet" />
+    <link href="~/Content/AngularCss/css/main.css" rel="stylesheet" />
+    @RenderSection("Css", required: false)
+    <!--[if lt IE 9]>
+    <script src="~/Content/Scripts/html5shiv.js"></script>
+    <script src="~/Content/Scripts/respond.min.js"></script>
+        <![endif]-->
+    <script src="~/Content/Scripts/jquery-1.11.1.min.js"></script>
+    <script src="~/Content/Scripts/angularjs1.6.1/angular.min.js"></script>
+    <script src="~/Content/Scripts/angularApp/tm.pagination.js"></script>
+    <script src="~/Content/Scripts/DatePicker/WdatePicker.js"></script>
+    <script src="~/Content/Scripts/angularApp/datePicker.js"></script>
+    <script>
+        var CurPath = '/';
+    </script>
+    @RenderSection("Scripts", required: false)
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>

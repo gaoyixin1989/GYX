@@ -1,0 +1,124 @@
+/* 
+ * treeGrid.css
+ *
+ * Styles for the tree-grid
+ * for both Bootstrap 2 and Bootstrap 3
+ *
+ */
+
+  
+    .tree-grid tr td:first-child {
+        text-align:left;
+        line-height:27px;
+    }
+     .tree-grid .level-1 .tree-icon {
+        float:left;
+        position:relative;
+        left: 10px;
+    }
+    .tree-grid .level-1 .tree-label {
+
+        left: 10px;
+    }
+     .tree-grid .level-2 .tree-icon {
+        float:left;
+        position:relative;
+        left: 30px;
+      
+    }
+    .tree-grid .level-2 .tree-label {
+        position:relative;
+        left: 30px;
+    }
+     .tree-grid .level-3 .tree-icon {
+        float:left;
+        position:relative;
+        left: 50px;
+      
+    }
+    .tree-grid .level-3 .tree-label {
+      
+       left: 50px;
+    }
+     .tree-grid .level-4 .tree-icon {
+        float:left;
+        position:relative;
+        left: 70px;
+      
+    }
+    .tree-grid .level-4 .tree-label {
+        
+        left: 70px;
+    }
+     .tree-grid .level-5 .tree-icon {
+        float:left;
+        position:relative;
+        left: 90px;
+      
+    }
+    .tree-grid .level-5 .tree-label {
+       
+        left: 90px;
+    }
+     .tree-grid .level-6 .tree-icon {
+        float:left;
+        position:relative;
+        left: 110px;
+      
+    }
+    .tree-grid .level-6 .tree-label {
+        
+        left: 110px;
+    }
+
+
+    .tree-grid .tree-icon
+    {
+        
+        cursor: pointer;
+    }
+    .tree-grid .tree-label {
+        line-height:25px;
+        position:relative; 
+    }
+    table.tree-grid {
+        max-height: 400px;
+        overflow-y: scroll;
+    }
+  
+.tree-grid .icon-plus { 
+        display:block;
+        overflow:hidden; 
+        width:27px; 
+        height:27px;
+        background: url(../images/treeIcon/l-collapsed.png)   no-repeat;
+
+   }
+  
+.tree-grid .icon-minus{
+        display:block; 
+        width:27px; 
+        height:27px; 
+        overflow:hidden; 
+        background: url(../images/treeIcon/l-expanded.png)   no-repeat;
+
+   }
+  
+.tree-grid .level-1 .icon-minus{
+        display:block; 
+        width:27px; 
+        height:27px; 
+        /*margin-top:3px;*/
+        overflow:hidden; 
+        background: url(../images/treeIcon/l-expanded-1.png)   no-repeat;
+
+   }
+  
+.tree-grid .glyphicon-globe{
+        display:block;  
+        width:33px; 
+        height:27px;
+        /*margin-top:5px;*/
+        overflow:hidden; 
+        background: url(../images/treeIcon/l-leaf.png)   no-repeat;
+}

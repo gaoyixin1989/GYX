@@ -1,0 +1,17 @@
+﻿/*高怡鑫*/
+.extend-icon-folder {
+    background: url('images/tree_icons.png') no-repeat -208px 0;
+}
+.extend-icon-folder-open {
+    background: url('images/tree_icons.png') no-repeat -224px 0;
+}
+.extend-icon-file {
+  background: url('images/tree_icons.png') no-repeat -240px 0;
+}
+
+.extend-icon-expand {
+    background: url('images/expand.png') no-repeat center center;
+}
+.extend-icon-collapse {
+    background: url('images/collapse.png') no-repeat center center;
+}

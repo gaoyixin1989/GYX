@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "取现记录编辑";
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+@section Scripts{
+    <script>
+        var id = '@ViewData["id"]';
+
+        $(function () {
+            var addUseData = false;
+            var addUserComboData = false;
+            ajaxPost({//是否启用
+                url: '/System/SysDict/GetDictByCode?strCode=UseState',
+                success: function (result) {
+                    $('#IsUse').html(createRadioHtml({ data: result, name: 'IsUse', hasDefault: true }));
+                    addUseData = true;
+                }
+            });
+            ////加载用户
+            //$('#UserId').combobox({
+            //    url: '/System/SysUser/GetDataForCombo',
+            //    panelHeight: 'auto',
+            //    height: 28,
+            //    width: 168,
+            //    onLoadSuccess: function () {
+            //        addUserComboData = true;
+            //    }
+            //});
+
+            var getData = function () {
+                setTimeout(function () {
+                    if (addUseData) {
+                            ajaxPost({//是否启用
+                                url: '/Assets/CreditCard/GetDataById_TakeRecord',
+                                data: { id: id },
+                                success: function (data) {
+                                    $("#UIForm").form('load', data);
+                                }
+                            });
+
+                    }
+                    else {
+                        getData();
+                    }
+                }, 100);
+
+            }
+            if (!!id) {
+                getData();
+            }
+
+        });
+
+
+        function saveData() {
+            var temp = { isSuccess: false }
+            if (!$("#UIForm").form("validate")) {
+                return false;
+            }
+            var dataForSave = $("#UIForm").formtojsonObj();
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/Assets/CreditCard/Save_TakeRecor",
+                data: dataForSave,
+                async: false,
+                success: function (data) {
+                    temp = data;
+                },
+                error: function () {
+                    temp.message = "ajax出错";
+                }
+            })
+            return temp;
+        }
+    </script>
+}
+
+@section Css{
+    <style>
+    </style>
+}
+
+<form id="UIForm">
+    <input id="Id" name="Id" class="hidden" />
+    <table class="tableList">
+        <tr>
+            <th>卡名称：</th>
+            <td><input type="text" name="CardId" class="easyui-combobox" data-options="required:true,url:'/Assets/CreditCard/GetDataForCombo_CardInfo',panelHeight:'auto',height:28,width:163" /></td>
+
+        </tr>
+        <tr>
+            <th>取现日期：</th>
+            <td><input type="text" name="TakeDate" class="Wdate input_text easyui-validatebox" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" data-options="required:true"  /></td>
+        <tr>
+            <th>金额：</th>
+            <td><input type="text" name="TakeMoney" class="easyui-numberbox" data-options="required:true,min:0,precision:2,height:28,width:163,prefix:'￥'" /></td>
+        </tr>
+        <tr>
+            <th>手续费：</th>
+            <td><input type="text" name="Fee" class="easyui-numberbox" data-options="required:true,min:0,precision:2,height:28,width:163,prefix:'￥'" /></td>
+        </tr>
+        <tr>
+            <th>备注：</th>
+            <td><textarea name="Remark" style="width:95%; height:80px;"></textarea></td>
+        </tr>
+    </table>
+</form>
+

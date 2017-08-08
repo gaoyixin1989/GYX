@@ -1,0 +1,320 @@
+﻿
+@{
+    ViewBag.Title = "菜单管理";
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            GetTreeData();//获取Menu树菜单
+            ajaxPost({//菜单类型
+                url: '/System/SysDict/GetDictByCode?strCode=MenuType',
+                success: function (result) {
+                    $('#MenuType').html(createRadioHtml({ data: result, name: 'MenuType', hasDefault: true }));
+                }
+            });
+            ajaxPost({//是否启用
+                url: '/System/SysDict/GetDictByCode?strCode=UseState',
+                success: function (result) {
+                    $('#IsUse').html(createRadioHtml({ data: result, name: 'IsUse', hasDefault: true }));
+                }
+            });
+            ajaxPost({//是否显示
+                url: '/System/SysDict/GetDictByCode?strCode=ShowState',
+                success: function (result) {
+                    $('#IsShow').html(createRadioHtml({ data: result, name: 'IsShow', hasDefault: true }));
+                }
+            });
+        });
+
+        //获取Menu树菜单
+        function GetTreeData(defaultId) {
+            ResetFormData();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/System/SysMenu/GetTreeData",
+                success: function (result) {
+                    result = ResetStateAndIcon(result);
+                    $('#ulTree').tree({
+                        data: result,
+                        animate: true,  //定义节点在展开或折叠的时候是否显示动画效果
+                        lines: true,    //定义是否显示树控件上的虚线
+                        dnd: true,  //定义是否启用拖拽功能
+                        onSelect: Tree_onSelect, //在用户点击一个节点的时候触发
+                        onDrop: Tree_onDrop, //拖动节点后
+                        onContextMenu: function (e, node) { //在右键点击节点的时候触发
+                            e.preventDefault();
+                            $(this).tree('select', node.target);
+                            // 显示快捷菜单
+                            $('#RightMenu').menu('show', {
+                                left: e.pageX,
+                                top: e.pageY
+                            });
+                        },
+                        onLoadSuccess: function (node, data) {
+                            var curGrid = $(this)
+                            $.each(data, function (i, item) {
+                                var mm = curGrid.tree('find', item.id);
+                                curGrid.tree('expand', mm.target);
+                            });
+                            if (!!defaultId) {
+                                var defaultNode = $(this).tree('find', defaultId);
+                                $(this).tree('select', defaultNode.target);
+
+                                $(this).tree('expandTo', defaultNode.target);
+                                $(this).tree('expand', defaultNode.target);
+                            }
+
+                            defaultId = null;
+                        }
+                    });
+                }
+            })
+        }
+
+        //重置树的状态和图标
+        function ResetStateAndIcon(data) {
+            $.each(data, function (i, item) {
+                if (item.attributes.MenuType == 'item') {
+                    item.iconCls = 'extend-icon-file';
+                }
+                else {
+                    item.iconCls = 'extend-icon-folder';
+                }
+                if (item.children != null) {
+                    ResetStateAndIcon(item.children);
+                }
+            });
+            return data;
+        }
+
+        //树菜单点击事件，加载节点数据及父节点数据
+        function Tree_onSelect(node) {
+            ResetFormData();
+            $("#UIForm").form('load', node.attributes);
+            var parentNode = $('#ulTree').tree('getParent', node.target);
+            if (parentNode != null) {
+                $("#ParentId").val(parentNode.id);
+                $("#ParentText").val(parentNode.text);
+            }
+            else {
+                $("#ParentId").val("0");
+                $("#ParentText").val("根节点");
+            }
+        }
+
+        //树菜单拖动节点后修改菜单的父子关系和排序
+        function Tree_onDrop(target, source, point) {
+            //target参照节点
+            //source被拖动的节点
+            //point代表了target和source的关系；值有：'append'父子关系,'top'上方 或 'bottom'下方。
+            var parentNode;//父节点
+            var childNode;//父节点下的所有一级子节点
+            var parentId = 0;
+            var arrChildIds = [];
+
+            if (point == "append")
+                parentNode = $('#ulTree').tree('getNode', target);
+            else
+                parentNode = $('#ulTree').tree('getParent', target);
+            if (parentNode != null) {
+                parentId = parentNode.id;
+                childNode = $("#ulTree").tree('getFirstLevelChildren', parentNode.target);
+            }
+            else {
+                parentId = 0;
+                childNode = $("#ulTree").tree('getRoots');
+            }
+            $.each(childNode, function (i, item) {
+                arrChildIds.push(item.id);
+            })
+
+            //保存父子关系和排序
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/System/SysMenu/ResetParnetAndSort",
+                data: { parentId: parentId, arrChildIds: arrChildIds },
+                success: function (data) {
+                    if (data.Result == true) {
+                        source.attributes.parentId = parentId;
+                    }
+                    else
+                        $.messager.alert('提示', '操作失败', 'error');
+                }
+            })
+        }
+
+        //重置表单中的数据
+        function ResetFormData() {
+            //$("#UIForm").form('reset');
+            //$("#UIForm")[0].reset();
+            document.getElementById("UIForm").reset();//type='hidden'的节点无法清除
+            //$("#Id").val('');
+            //$("#ParentText").val('');
+        }
+        //保存数据
+        function SaveData() {
+            if (!$("#UIForm").form("validate")) {
+                return false;
+            }
+            var dataForSave = $("#UIForm").formtojsonObj();
+            $.messager.confirm('提示', '你确定要保存吗？', function (r) {
+                if (r) {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "/System/SysMenu/Save",
+                        //data: $("#UIForm").serialize(),
+                        data: dataForSave,
+                        success: function (data) {
+                            if (data.Result == true) {
+                                //$.messager.alert('提示', '保存成功', 'info');
+                                GetTreeData(dataForSave.Id);
+                            }
+                            else
+                                $.messager.alert('提示', '保存失败', 'error');
+                        },
+                        error: function () {
+                            $.messager.alert('提示', '出错', 'error');
+                        }
+                    })
+                }
+            });
+
+
+        }
+        //右键菜单“添加”按钮
+        function AddMenu() {
+            ResetFormData();
+            var node = $('#ulTree').tree('getSelected');
+            if (node != null) {
+                $("#ParentId").val(node.id);
+                $("#ParentText").val(node.text);
+            }
+        }
+        //右键菜单“删除”按钮
+        function DelMenu() {
+            var node = $('#ulTree').tree('getSelected');
+            if (node != null) {
+                $.messager.confirm('提示', '你确定要删除菜单“' + node.text + '”吗？', function (r) {
+                    if (r) {
+                        if (node.children != null && node.children.length > 0) {
+                            $.messager.confirm('提示', '是否删除其子元素？', function (m) {
+                                DelData(node, m);
+                            });
+                        }
+                        else {
+                            DelData(node, false);
+                        }
+                    }
+                });
+
+            }
+        }
+        //删除数据，DelMenu删除菜单时调用
+        function DelData(node, withSon) {
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/System/SysMenu/Delete",
+                data: { ids: [node.id], withSon: withSon },
+                success: function (data) {
+                    if (data.Result == true) {
+                        GetTreeData();
+                    }
+                    else
+                        $.messager.alert('提示', '操作失败', 'error');
+                },
+                error: function () {
+                    $.messager.alert('提示', '出错', 'error');
+                }
+            })
+        }
+
+        //右键菜单的“展开”,展开该节点的所以子节点
+        function ExpandAll() {
+            var node = $('#ulTree').tree('getSelected');
+            $('#ulTree').tree('expandAll', node.target);
+        }
+        //右键菜单的“收缩”,收缩该节点的所以子节点
+        function CollapseAll() {
+            var node = $('#ulTree').tree('getSelected');
+            $('#ulTree').tree('collapseAll', node.target);
+        }
+    </script>
+}
+
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west',title:'菜单管理',split:true, collapsible:false" style="width: 300px;">
+        <ul id="ulTree"></ul>
+        <div id="RightMenu" class="easyui-menu" data-options="minWidth:80">
+            <div onclick="AddMenu()" data-options="iconCls:'icon-add'">添加</div>
+            <div onclick="DelMenu()" data-options="iconCls:'icon-remove'">删除</div>
+            <div class="menu-sep"></div>  
+            <div onclick="ExpandAll()" data-options="iconCls:'extend-icon-expand'">展开</div>
+            <div onclick="CollapseAll()" data-options="iconCls:'extend-icon-collapse'">收缩</div>
+        </div>
+    </div>
+    <div data-options="region:'center',title:'菜单编辑'">
+        <form id="UIForm">
+            <input id="Id" name="Id" class="hidden" />
+            <input id="ParentId" name="ParentId" class="hidden" />
+            <table class="tableList" style="width:700px; margin-top:10px; margin-left:20px;">
+                <tr>
+                    <th>父菜单：</th>
+                    <td><input type="text" id="ParentText" name="ParentText" class="easyui-validatebox input_text" disabled="disabled" /></td>
+                </tr>
+                <tr>
+                    <th>菜单类型：</th>
+                    <td id="MenuType">
+                        @*<label>
+                            <input id="MenuType1" type="radio" name="MenuType" value="menu" /><span>菜单</span>
+                        </label>
+                        <label>
+                            <input id="MenuType2" type="radio" name="MenuType" value="item" /><span>菜单项</span>
+                        </label>*@
+                    </td>
+                </tr>
+                <tr>
+                    <th>菜单名称：</th>
+                    <td><input type="text" id="MenuText" name="MenuText" class="easyui-validatebox input_text" data-options="required:true" /></td>
+                </tr>
+                <tr>
+                    <th>路径：</th>
+                    <td><input type="text" id="MenuUrl" name="MenuUrl" class="input_text" /></td>
+                </tr>
+                <tr>
+                    <th>是否启用：</th>
+                    <td id="IsUse">
+                        @*<label>
+                            <input id="IsUse1" type="radio" name="IsUse" value="true" /><span>是</span>
+                        </label>
+                        <label>
+                            <input id="IsUse2" type="radio" name="IsUse" value="false" /><span>否</span>
+                        </label>*@
+                    </td>
+                </tr>
+                <tr>
+                    <th>是否显示：</th>
+                    <td id="IsShow">
+                        @*<label>
+                            <input id="IsShow1" type="radio" name="IsShow" value="true" /><span>是</span>
+                        </label>
+                        <label>
+                            <input id="IsShow2" type="radio" name="IsShow" value="false" /><span>否</span>
+                        </label>*@
+                    </td>
+                </tr>
+                <tr><th>备注：</th><td><textarea id="Remark" name="Remark" style="width:95%; height:80px;"></textarea></td></tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        <a id="btnSave" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="SaveData()">保 存</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

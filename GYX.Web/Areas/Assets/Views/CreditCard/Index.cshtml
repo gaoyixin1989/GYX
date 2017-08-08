@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewBag.Title = "信用卡信息信息";
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+@section Scripts{
+    <script>
+        $(function () {
+            $('#dg').iDatagrid({
+                url: '/Assets/CreditCard/GetDataList_CardInfo',
+                onDblClickRow: function (index, row) {
+                    Edit(row.Id);
+                },
+                columns: [[
+                    { field: 'Id', checkbox: true },
+                    {
+                        field: 'UserObj', title: '归属', halign: 'center', align: 'center', width: 100, formatter: function (value, row, index) {
+                            return value.RealName;
+                        }},//UserId
+                    { field: 'CardName', title: '卡名称', halign: 'center', align: 'center', width: 100 },
+                    { field: 'LimitMoney', title: '额度', halign: 'center', align: 'center', width: 80 },
+                    { field: 'BillDay', title: '账单日', halign: 'center', align: 'center', width: 80 },
+                    { field: 'RepaymentDay', title: '还款日', halign: 'center', align: 'center', width: 80 },
+                    {
+                        field: 'IsUse', title: '启用', width: 50, halign: 'center', align: 'center', formatter: function (value, row, index) {
+                            return getStateImgStr(row.IsUse);
+                        }
+                    },
+                    {
+                        field: 'option', title: '操作', halign: 'center', align: 'center', formatter: function (value, row, index) {
+                            var str = "<div class='option_col'>";
+                            str += "<a href='#' onclick='Edit(" + row.Id + ")'>编辑</a>|";
+                            str += "<a href='#' onclick='IsUse([" + row.Id + "]," + (!row.IsUse) + ")'>" + (row.IsUse ? '禁用' : '启用') + "</a>|";
+                            str += "<a href='#' onclick='Del([" + row.Id + "])'>删除</a>";
+                            str += "</div> ";
+                            return str;
+                        }
+                    }
+                ]]
+            });
+
+        });
+        
+        //点击编辑
+        function Edit(id) {
+            doForm({
+                url: "/Assets/CreditCard/Edit?id="+id,
+                width: 600,
+                height: 400,
+                afterSuccess: function (data) {
+                    $('#dg').datagrid('reload');
+                }
+            });
+        }
+        //点击删除
+        function Del(ids) {
+            if (ids.length > 0) {
+                top.$.messager.confirm('提示', '你确定要所选' + ids.length + '条数据吗？', function (r) {
+                    if (r) {
+                        ajaxPost({//是否启用
+                            url: '/Assets/CreditCard/Delete_CardInfo',
+                            data: { ids: ids },
+                            success: function (data) {
+                                if (data.isSuccess) {
+                                    $('#dg').datagrid('reload');
+                                    $.messager.alert('提示', data.message, 'info');
+                                }
+                                else {
+                                    $.messager.alert('提示', data.message, 'error');
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        //点击删除按钮
+        function Del_Btn() {
+            var rows = $('#dg').datagrid('getSelections');
+            var ids = getAttrByArr(rows, 'Id');
+            Del(ids);
+        }
+
+        //点击启用禁用
+        function IsUse(ids, value) {
+            if (ids.length > 0) {
+                ajaxPost({//是否启用
+                    url: '/Assets/CreditCard/ResetIsUse_CardInfo',
+                    data: { ids: ids, isUse: value },
+                    success: function (data) {
+                        if (data.isSuccess) {
+                            $('#dg').datagrid('reload');
+                        }
+                        else {
+                            $.messager.alert('提示', '修改失败', 'error');
+                        }
+                    }
+                });
+            }
+        }
+        //点击启用禁用按钮
+        function IsUse_Btn(value) {
+            var rows = $('#dg').datagrid('getSelections');
+            var ids = getAttrByArr(rows, 'Id');
+            IsUse(ids, value);
+        }
+
+        //查询
+        function Query() {
+            var mm = top;
+            var dataForSave = $("#searchForm").formtojsonObj();
+
+            $('#dg').datagrid('load', dataForSave);
+        }
+        
+    </script>
+}
+
+@section Css{
+    <style>
+    </style>
+}
+<table id="dg"></table>
+<div id="searchDiv" class="searchDiv">
+    <form id="searchForm">
+        <table class="searchTable">
+            <tr>
+                <td><span>归属：</span><input type="text" name="UserId" class="easyui-combobox" data-options="url:'/System/SysUser/GetDataForCombo',panelHeight:'auto',width:120,multiple:true" /></td>
+                <td><span>状态：</span><input type="text" name="IsUse" class="easyui-combobox" data-options="url:'/System/SysDict/GetDictByCode?strCode=UseState',valueField:'DictCode',textField:'DictText',panelHeight:'auto',width:120,multiple:true" /></td>
+                <td><span>卡名称：</span><input type="text" name="CardName" class="sr_input" /></td>
+                <td><a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="Query()">查询</a></td>
+            </tr>
+        </table>
+    </form>
+    <table class="toolTable">
+        <tr>
+            <td>
+                <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="Edit()">新增</a>
+                <a href="javascript:void(0);#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="Del_Btn()">删除</a>
+                <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="IsUse_Btn(true)">启用</a>
+                <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-no" plain="true" onclick="IsUse_Btn(false)">禁用</a>
+            </td>
+            @*<td>
+                <div class="datagrid-btn-separator">
+                </div>
+            </td>*@
+        </tr>
+    </table>
+</div>
+<div id="dd">Dialog Content.</div>  
+

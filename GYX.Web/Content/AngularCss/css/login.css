@@ -1,0 +1,23 @@
+@charset "utf-8";
+.login-warp{ width:100%; background:#fafafa; position:relative; overflow:hidden;}
+.login-warp a.login-logo{ position:absolute; right:15%; top:30px;}
+.login-warp .login-bg{ width:50%; height:auto; overflow:hidden; position:absolute; left:0px; top:0px; background:#0380ba;}
+.login-warp .login-bg div{ text-align:right;}
+.login-warp .login-bg div img{ display:block; float:right;}
+.login-warp .login-right{ margin-left:50%; }
+
+.login-content{}
+.login-title{ margin-bottom:30px; margin-left:12px;}
+.login-infor table{ font-size:14px;}
+.login-infor table tr th{ font-weight:normal; color:#0a5ca7; padding:12px;}
+.login-infor table tr td{ padding:12px 0px;}
+.login-infor table tr td input.input-1{ width:215px; height:30px; line-height:30px; border:1px solid #4490ca; border-radius:3px; padding:0px 10px;}
+.login-infor table tr td div.div-1{ float:right;}
+.login-infor table tr td div.div-1 span{ margin-left:15px; font-size:12px; color:#666;}
+.login-infor table tr td div.div-1 span.current{ color:#0a5ca7;}
+.login-infor table tr td div.div-2{ position:relative;}
+.login-infor table tr td div.div-2 span{ font-size:12px; color:#F00; position:absolute; left:0px; top:-22px;}
+.login-infor table tr td div.div-2 a.a-1{ display:block; width:136px; height:40px; line-height:40px; border-radius:3px; text-align:center; color:#fff; font-size:14px; background:#1167ab;}
+.login-infor table tr td div.div-2 a.a-1:hover{ background:#07487b;}
+.login-infor table tr td div.div-2 a.a-2{ position:absolute; left:145px; top:20px; font-size:14px; color:#0a5ca7; text-decoration:underline;}
+.login-infor table tr td div.div-2 a.a-2:hover{ text-decoration:none; color:#07487b;}
