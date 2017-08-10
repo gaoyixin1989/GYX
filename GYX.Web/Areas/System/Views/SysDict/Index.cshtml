@@ -11,13 +11,13 @@
             ajaxPost({//是否启用
                 url: '/System/SysDict/GetDictByCode?strCode=UseState',
                 success: function (result) {
-                    $('#IsUse').html(createRadioHtml({ data: result, name: 'IsUse', hasDefault: true }));
+                    $('#IsUse').createRadioHtml({ data: result, name: 'IsUse', hasDefault: true });
                 }
             });
             ajaxPost({//是否默认值
                 url: '/System/SysDict/GetDictByCode?strCode=DefaultState',
                 success: function (result) {
-                    $('#IsDefalut').html(createRadioHtml({ data: result, name: 'IsDefalut', hasDefault: true }));
+                    $('#IsDefalut').createRadioHtml({ data: result, name: 'IsDefalut', hasDefault: true });
                 }
             });
         });

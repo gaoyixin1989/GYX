@@ -6,6 +6,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+/// <summary>
+/// 资产管理
+/// </summary>
 namespace GYX.Web.Areas.Assets.Controllers
 {
     public class AssetsController : BaseController

@@ -8,39 +8,48 @@
         var id = '@ViewData["id"]';
 
         $(function () {
-            var isInit = false;
+            var getData = function () {
+                if (!!id) {
+                    ajaxPost({//加载数据
+                        url: '/System/SysUser/GetDataById',
+                        data: { id: id },
+                        success: function (data) {
+                            $("#UIForm").form('load', data);
+                        }
+                    });
+                }
+            }
+
+            initData(getData);
+            
+        });
+
+        //初始化数据
+        //afterInitFn为初始化结束后执行方法
+        function initData(afterInitFn) {
+            var addIsUse = false;
             ajaxPost({//是否启用
                 url: '/System/SysDict/GetDictByCode?strCode=UseState',
                 success: function (result) {
-                    $('#IsUse').html(createRadioHtml({ data: result, name: 'IsUse', hasDefault: true }));
-                    isInit = true;
+                    $('#IsUse').createRadioHtml({ data: result, name: 'IsUse', hasDefault: true });
+                    addIsUse = true;
                 }
             });
 
-            var getData = function () {
+            var onAfterInit = function () {
                 setTimeout(function () {
-                    if (isInit) {
-                            ajaxPost({//是否启用
-                                url: '/System/SysUser/GetDataById',
-                                data: { id: id },
-                                success: function (data) {
-                                    $("#UIForm").form('load', data);
-                                }
-                            });
-
+                    if (addIsUse) {
+                        if (afterInitFn != null && typeof (afterInitFn) == 'function') {
+                            afterInitFn.call(this);
+                        }
                     }
                     else {
-                        getData();
+                        onAfterInit();
                     }
                 }, 100);
-
             }
-
-            if (!!id) {
-                getData();
-            }
-
-        });
+            onAfterInit();
+        }
 
 
         function saveData() {

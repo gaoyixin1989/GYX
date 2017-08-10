@@ -9,9 +9,9 @@
 
             $('#dg').iDatagrid({
                 url: '/Assets/CreditCard/GetDataList_TakeRecord',
-                onDblClickRow: function (index, row) {
-                    Edit(row.Id);
-                },
+                //onDblClickRow: function (index, row) {
+                //    Edit(row.Id);
+                //},
                 columns: [[
                     { field: 'Id', checkbox: true },
                     { field: 'UserName', title: '归属', halign: 'center', align: 'center', width: 100 },
@@ -29,7 +29,7 @@
                     {
                         field: 'option', title: '操作', halign: 'center', align: 'center', formatter: function (value, row, index) {
                             var str = "<div class='option_col'>";
-                            str += "<a href='#' onclick='Del([" + row.Id + "])'>删除</a>";
+                            str += "<a href='#' onclick='Del([\"" + row.Id + "\"])'>删除</a>";
                             str += "</div> ";
                             return str;
                         }

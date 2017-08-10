@@ -285,6 +285,8 @@ namespace GYX.Data
                         continue;
                     var pName = item.Name;//字段名
                     var type = value.GetType().Name.ToLower();//类型名
+
+                    string[] typeArr = { "datetime", "int32", "decimal" };
                     if (type == "datetime")//这是为了解决区分开始时间和结束时间问题且开始时间必须以Star结尾，结束时间必须以End结尾。若取等于就不用做这些处理。
                     {
                         starOrEnd = 0;//1-开始时间，2-结束时间，其它-时间等于
@@ -325,21 +327,38 @@ namespace GYX.Data
             var type = obj.GetType().Name;
             switch (type.ToLower())
             {
-                case "boolean":
-                    body = Expression.And(
-                        body,
-                        Expression.Equal(member, Expression.Constant(obj, member.Type)));
-                    break;
-                case "int32":                    //int类型时执行以下组合。等于
-                    body = Expression.And(
-                        body,
-                        Expression.Equal(member, Expression.Constant(obj, member.Type)));
-                    break;
+
                 case "string":                   //String类型时执行以下组合.包含Contains()
                     body = Expression.And(
                         body,
                         Expression.Call(member, typeof(string).GetMethod("Contains", new Type[] { typeof(string) }),
                         Expression.Constant(obj)));
+                    break;
+                case "guid":                   //String类型时执行以下组合.包含Contains()
+                    body = Expression.And(
+                        body,
+                        Expression.Equal(member, Expression.Constant(obj, member.Type)));
+                    break;
+                case "boolean":
+                    body = Expression.And(
+                        body,
+                        Expression.Equal(member, Expression.Constant(obj, member.Type)));
+                    break;
+                case "int32":        
+                case "decimal":
+                    //int，decimal类型时执行以下组合。 //starOrEnd：1-大于等于，2-小于等于，其它-等于
+                    if (starOrEnd == 1)
+                        body = Expression.And(
+                           body,
+                           Expression.GreaterThanOrEqual(member, Expression.Constant(obj, member.Type)));
+                    else if (starOrEnd == 2)
+                        body = Expression.And(
+                           body,
+                           Expression.LessThanOrEqual(member, Expression.Constant(obj, member.Type)));
+                    else
+                        body = Expression.And(
+                            body,
+                            Expression.Equal(member, Expression.Constant(obj, member.Type)));
                     break;
                 case "datetime":                 //Datetime类型时执行以下组合.GreaterThanOrEqual/ LessThanOrEqual 
                     //starOrEnd的值：1-开始时间，2-结束时间，其它-时间等于

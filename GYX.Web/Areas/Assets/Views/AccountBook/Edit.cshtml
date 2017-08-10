@@ -1,0 +1,191 @@
+﻿
+@{
+    ViewBag.Title = "记账编辑";
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+@section Scripts{
+    <script>
+        var id = '@ViewData["id"]';
+        var curBillType = '';
+
+        $(function () {
+
+            var getData = function () {
+                if (!!id) {
+                    ajaxPost({//加载数据
+                        url: '/Assets/AccountBook/GetDataById',
+                        data: { id: id },
+                        success: function (data) {
+                            $("#UIForm").form('load', data);
+                        }
+                    });
+                }
+            }
+
+            initData(getData);
+
+        });
+        
+        //初始化数据
+        //afterInitFn为初始化结束后执行方法
+        function initData(afterInitFn) {
+            var addBillTypeOutput = false;//支出类型
+            var addBillTypeIncome = false;//收入类型
+            var addBookName = false;//账本名称
+            var addBillType = false;//账单类型
+            var addCurrencyType = false;//货币类型
+
+
+            //支出类型
+            ajaxPost({
+                url: '/System/SysDict/GetDictTreeByCode?strCode=BillType_output',
+                success: function (result) {
+                    $('#BillTypeOutput').createEasyuiCombotreeByDictData({ data: result });
+                }
+            });
+            //收入类型
+            ajaxPost({
+                url: '/System/SysDict/GetDictTreeByCode?strCode=BillType_income',
+                success: function (result) {
+                    $('#BillTypeIncome').createEasyuiCombotreeByDictData({ data: result });
+                }
+            });
+
+            //账本名称
+            ajaxPost({
+                url: '/System/SysDict/GetDictByCode?strCode=BookName',
+                success: function (result) {
+                    $('#BookName').createEasyuiComboboxByDictData({
+                        required: true,
+                        data: result, onInitSuccess: function () {
+                            addBookName = true;
+                        }
+                    });
+                }
+            });
+            //账单类型
+            ajaxPost({//账单类型
+                url: '/System/SysDict/GetDictByCode?strCode=BillType',
+                success: function (result) {
+                    $('#BillType').createRadioHtml({
+                        data: result, name: 'BillType', hasDefault: true,
+                        OnClick: function (value) {
+                            if (curBillType != value) {
+                                //$('#BillTypeOutput').combotree('clear');
+                                //$('#BillTypeIncome').combotree('clear');
+                                $('#BillTypeOutput').combotree({ required: false });
+                                $('#BillTypeIncome').combotree({ required: false });
+                                curBillType = value;
+                                if (curBillType == '收入') {
+                                    $('.BillTypeIncome').show();
+                                    $('.BillTypeOutput').hide();
+                                    //$('#BillTypeIncome').combotree({ required: true });
+                                }
+                                else {
+                                    $('.BillTypeIncome').hide();
+                                    $('.BillTypeOutput').show();
+                                    //$('#BillTypeOutput').combotree({ required: true });
+                                }
+                            }
+                        }
+                    });
+                    addBillType = true;
+                }
+            });
+            //货币类型
+            ajaxPost({//货币类型
+                url: '/System/SysDict/GetDictByCode?strCode=CurrencyType',
+                success: function (result) {
+                    $('#CurrencyType').createRadioHtml({
+                        data: result, name: 'CurrencyType', hasDefault: true,
+                        OnClick: function (value) {
+                            $('#Money').numberbox({
+                                prefix: value
+                            });
+                        }
+                    });
+                    addCurrencyType = true;
+                }
+            });
+            
+            var onAfterInit = function () {
+                setTimeout(function () {
+                    if (addBookName && addBillType && addCurrencyType) {
+                        if (afterInitFn != null&&typeof (afterInitFn) =='function' ) {
+                            afterInitFn.call(this);
+                        }
+                    }
+                    else {
+                        onAfterInit();
+                    }
+                },100);
+            }
+            onAfterInit();
+        }
+
+
+        function saveData() {
+            var temp = { isSuccess: false }
+            if (!$("#UIForm").form("validate")) {
+                return false;
+            }
+            var dataForSave = $("#UIForm").formtojsonObj();
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/Assets/AccountBook/Save",
+                data: dataForSave,
+                async: false,
+                success: function (data) {
+                    temp = data;
+                },
+                error: function () {
+                    temp.message = "ajax出错";
+                }
+            })
+            return temp;
+        }
+    </script>
+}
+
+@section Css{
+    <style>
+    </style>
+}
+
+<form id="UIForm">
+    <input id="Id" name="Id" class="hidden" />
+    <table class="tableList">
+        <tr>
+            <th>账本名称：</th>
+            <td><input type="text" name="BookName" id="BookName" class="input_text" /></td>
+            <th>支付时间：</th>
+            <td>
+                <input type="text" name="PayTime" class="Wdate input_text easyui-validatebox" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" data-options="required:true" />
+            </td>
+        </tr>
+        <tr>
+            <th>账单类型(收/支)：</th>
+            <td id="BillType"></td>
+            <th class="BillTypeOutput">支出类型：</th>
+            <td class="BillTypeOutput">
+                <input type="text" id="BillTypeOutput" name="BillTypeOutput" />
+            </td>
+            <th class="BillTypeIncome">收入类型：</th>
+            <td class="BillTypeIncome">
+                <input type="text" id="BillTypeIncome" name="BillTypeIncome" />
+            </td>
+        </tr>
+        <tr>
+            <th>货币类型：</th>
+            <td id="CurrencyType"></td>
+            <th>金额：</th>
+            <td>
+                <input type="text" id="Money" name="Money" class="easyui-numberbox" data-options="required:true,min:0,precision:2,height:28,width:163" />
+            </td>
+        </tr>
+        <tr><th>备注：</th><td colspan="3"><textarea name="Remark" style="width:95%; height:80px;"></textarea></td></tr>
+    </table>
+</form>
+

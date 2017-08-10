@@ -11,7 +11,7 @@ namespace GYX.Data.Domain.Assets
         /// <summary>
         /// 编号
         /// </summary>
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         /// <summary>
         /// 归属账本（账本名称代号）
         /// </summary>
@@ -25,9 +25,13 @@ namespace GYX.Data.Domain.Assets
         /// </summary>
         public DateTime? PayTime { get; set; }
         /// <summary>
-        /// 支付类型
+        /// 收入类型
         /// </summary>
-        public string PayType { get; set; }
+        public string BillTypeIncome { get; set; }
+        /// <summary>
+        /// 支出类型
+        /// </summary>
+        public string BillTypeOutput { get; set; }
         /// <summary>
         /// 金额
         /// </summary>

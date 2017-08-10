@@ -11,11 +11,11 @@ namespace GYX.Data.Domain.Assets
         /// <summary>
         /// 编号
         /// </summary>
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         /// <summary>
         /// 信用卡id
         /// </summary>
-        public int? CardId { get; set; }
+        public Guid? CardId { get; set; }
         /// <summary>
         /// 取现日期
         /// </summary>

@@ -8,49 +8,49 @@
         var id = '@ViewData["id"]';
 
         $(function () {
-            var addUseData = false;
-            var addUserComboData = false;
+
+            var getData = function () {
+                if (!!id) {
+                    ajaxPost({//加载数据
+                        url: '/Assets/CreditCard/GetDataById_CardInfo',
+                        data: { id: id },
+                        success: function (data) {
+                            $("#UIForm").form('load', data);
+                        }
+                    });
+                }
+            }
+
+            initData(getData);
+
+        });
+
+        //初始化数据
+        //afterInitFn为初始化结束后执行方法
+        function initData(afterInitFn) {
+            var addIsUse = false;
             ajaxPost({//是否启用
                 url: '/System/SysDict/GetDictByCode?strCode=UseState',
                 success: function (result) {
-                    $('#IsUse').html(createRadioHtml({ data: result, name: 'IsUse', hasDefault: true }));
-                    addUseData = true;
+                    $('#IsUse').createRadioHtml({ data: result, name: 'IsUse', hasDefault: true });
+                    addIsUse = true;
                 }
             });
-            ////加载用户
-            //$('#UserId').combobox({
-            //    url: '/System/SysUser/GetDataForCombo',
-            //    panelHeight: 'auto',
-            //    height: 28,
-            //    width: 168,
-            //    onLoadSuccess: function () {
-            //        addUserComboData = true;
-            //    }
-            //});  
 
-            var getData = function () {
+            var onAfterInit = function () {
                 setTimeout(function () {
-                    if (addUseData) {
-                            ajaxPost({//是否启用
-                                url: '/Assets/CreditCard/GetDataById_CardInfo',
-                                data: { id: id },
-                                success: function (data) {
-                                    $("#UIForm").form('load', data);
-                                }
-                            });
-
+                    if (addIsUse) {
+                        if (afterInitFn != null && typeof (afterInitFn) == 'function') {
+                            afterInitFn.call(this);
+                        }
                     }
                     else {
-                        getData();
+                        onAfterInit();
                     }
                 }, 100);
-
             }
-            if (!!id) {
-                getData();
-            }
-
-        });
+            onAfterInit();
+        }
 
 
         function saveData() {
@@ -80,7 +80,7 @@
 
 @section Css{
     <style>
-        
+
     </style>
 }
 
@@ -89,25 +89,26 @@
     <table class="tableList">
         <tr>
             <th>归属用户：</th>
-            <td><input type="text" name="UserId" class="easyui-combobox" data-options="url:'/System/SysUser/GetDataForCombo',panelHeight:'auto',height:28,width:163"/></td>
+            <td><input type="text" name="UserId" class="easyui-combobox" data-options="url:'/System/SysUser/GetDataForCombo',panelHeight:'auto',height:28,width:163" /></td>
             <th>卡号：</th>
             <td><input type="text" name="CardNo" class="input_text" /></td>
         </tr>
         <tr>
             <th>卡名称：</th>
-            <td><input type="text" name="CardName" class="easyui-validatebox input_text" data-options="required:true"/></td>
+            <td><input type="text" name="CardName" class="easyui-validatebox input_text" data-options="required:true" /></td>
             <th>额度：</th>
-            <td><input type="text" name="LimitMoney" class="easyui-numberbox" data-options="min:0,precision:2,height:28,width:163,prefix:'￥'" /></td>
+            <td>
+                <input type="text" name="LimitMoney" class="easyui-numberbox" data-options="min:0,precision:2,height:28,width:163,prefix:'￥'" />
+            </td>
         <tr>
             <th>账单日：</th>
             <td><input type="text" name="BillDay" class="easyui-numberspinner input_numberspinner" data-options="min:1,max:31,precision:0,height:28,width:163" /></td>
             <th>还款日：</th>
-            <td><input type="text" name="RepaymentDay" class="easyui-numberspinner" data-options="min:1,max:31,precision:0,height:28,width:163"  /></td>
+            <td><input type="text" name="RepaymentDay" class="easyui-numberspinner" data-options="min:1,max:31,precision:0,height:28,width:163" /></td>
         </tr>
         <tr>
             <th>是否启用：</th>
-            <td id="IsUse" colspan="3">
-            </td>
+            <td id="IsUse" colspan="3"></td>
         </tr>
         <tr><th>备注：</th><td colspan="3"><textarea name="Remark" style="width:95%; height:80px;"></textarea></td></tr>
     </table>

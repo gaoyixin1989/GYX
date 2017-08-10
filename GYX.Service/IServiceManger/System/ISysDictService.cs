@@ -13,7 +13,7 @@ namespace GYX.Service.IServiceManger.System
         /// <param name="ParentID">ParentID</param>
         /// <param name="withSelf">是否包含自身,默认false</param>
         /// <returns></returns>
-        List<SysDict> GetSonByParentID(int ParentId, bool withSelf = false);
+        List<SysDict> GetSonByParentID(Guid ParentId, bool withSelf = false);
 
         /// <summary>
         /// 根据父节点ID获取所有子节点
@@ -21,6 +21,6 @@ namespace GYX.Service.IServiceManger.System
         /// <param name="ParentID">ParentID</param>
         /// <param name="isSelf">是否包含自身,默认false</param>
         /// <returns></returns>
-        List<SysDict> GetAllSonByParentID(int ParentId, bool withSelf = false);
+        List<SysDict> GetAllSonByParentID(Guid ParentId, bool withSelf = false);
     }
 }

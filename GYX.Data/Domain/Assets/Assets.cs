@@ -11,7 +11,7 @@ namespace GYX.Data.Domain.Assets
         /// <summary>
         /// 编号
         /// </summary>
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>

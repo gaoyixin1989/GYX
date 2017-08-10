@@ -11,7 +11,7 @@ namespace GYX.Data.Domain.System
         /// <summary>
         /// ID±‡∫≈
         /// </summary>
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         /// <summary>
         /// ≤Àµ•œ‘ æ√˚≥∆
         /// </summary>
@@ -27,7 +27,7 @@ namespace GYX.Data.Domain.System
         /// <summary>
         /// ∏∏º∂≤Àµ•ID
         /// </summary>
-        public int? ParentId { get; set; }
+        public Guid? ParentId { get; set; }
         /// <summary>
         /// ≈≈–Ú
         /// </summary>

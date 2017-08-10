@@ -11,7 +11,7 @@ namespace GYX.Data.Domain.System
         /// <summary>
         /// 编号
         /// </summary>
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         /// <summary>
         /// 用户名
         /// </summary>

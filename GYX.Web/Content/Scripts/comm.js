@@ -282,20 +282,90 @@ function CheckboxRadio_setValueByName(name, arrValue) {
 //创建radio单选框html代码字符串
 //data：数据源、name元素name值、DictCode：值、DictText：文本、
 //hasDefault：是否初始默认值（设置默认值时，数据键名称为IsDefalut）
-function createRadioHtml(option) {
+$.fn.createRadioHtml = function (option) {
+    $(this).html('');
+    var labForRadio = $('<div class="labForRadio"></div>')
+    $(this).append(labForRadio);
+
     if (!option.data) { option.data = []; }
     if (!option.name) { option.name = '' }
     if (!option.DictCode) { option.DictCode = 'DictCode' }
     if (!option.DictText) { option.DictText = 'DictText' }
     if (!option.hasDefault) { option.hasDefault = false }
 
-    var strHtml = '';
     $.each(option.data, function (i, item) {
-        var isCheck = option.hasDefault && item["IsDefalut"] ? 'checked' : '';
-        strHtml += '<label><input type="radio" name="' + option.name + '" value="' + item[option.DictCode] + '" ' + isCheck + '/><span>' + item[option.DictText] + '</span></label>';
-    })
-    strHtml = '<div class="labForRadio">' + strHtml + '</div>'
-    return strHtml;
+        var strHtml = '<label><input type="radio" name="' + option.name + '" value="' + item[option.DictCode] + '" /><span>' + item[option.DictText] + '</span></label>';
+        var curObj = $(strHtml);
+        if (option.OnClick != null) {
+            curObj.find('[type="radio"]').change(function () {
+                var value=curObj.find('[type="radio"]:checked').val();
+                option.OnClick.call(this, value);
+            });
+        }
+        labForRadio.append(curObj);
+    });
+    
+    if (option.hasDefault) {
+        $.each(option.data, function (i, item) {
+            if (item["IsDefalut"] == true) {
+                labForRadio.find('[value="' + item[option.DictCode] + '"]').click();
+            }
+        });
+    }
+
+}
+
+//根据字典数据生成easyui的下拉框
+//data必填
+$.fn.createEasyuiComboboxByDictData = function (options) {
+    options = options == null ? {} : options;
+    var default_config = {
+        data:[],
+        valueField: 'DictCode',
+        textField: 'DictText',
+        panelHeight: 'auto',
+        height: 28,
+        width: 163,
+        multiple: false,
+        onLoadSuccess: function () {
+            var selectedValues = [];
+            $.each(options.data, function (i, item) {
+                if (item["IsDefalut"] == true) {
+                    selectedValues.push(item["DictCode"]);
+                }
+            });
+            $(this).combobox('setValues', selectedValues);
+            if (options.onInitSuccess != null)
+                options.onInitSuccess.call(this);
+        }
+    }
+    $.each(default_config, function (item, value) {
+        options[item] = options[item] || value;
+    });
+
+    $(this).combobox(options);
+}
+
+//根据字典数据生成easyui的下拉框树
+//data必填
+$.fn.createEasyuiCombotreeByDictData = function (options) {
+    options = options == null ? {} : options;
+    var default_config = {
+        data: [],
+        panelHeight: 'auto',
+        height: 28,
+        width: 163,
+        onLoadSuccess: function () {
+            var selectedValues = [];
+            if (options.onInitSuccess != null)
+                options.onInitSuccess.call(this);
+        }
+    }
+    $.each(default_config, function (item, value) {
+        options[item] = options[item] || value;
+    });
+
+    $(this).combotree(options);
 }
 
 //返回打勾或打叉的img字符串

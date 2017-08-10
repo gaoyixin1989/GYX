@@ -10,19 +10,19 @@
             ajaxPost({//菜单类型
                 url: '/System/SysDict/GetDictByCode?strCode=MenuType',
                 success: function (result) {
-                    $('#MenuType').html(createRadioHtml({ data: result, name: 'MenuType', hasDefault: true }));
+                    $('#MenuType').createRadioHtml({ data: result, name: 'MenuType', hasDefault: true });
                 }
             });
             ajaxPost({//是否启用
                 url: '/System/SysDict/GetDictByCode?strCode=UseState',
                 success: function (result) {
-                    $('#IsUse').html(createRadioHtml({ data: result, name: 'IsUse', hasDefault: true }));
+                    $('#IsUse').createRadioHtml({ data: result, name: 'IsUse', hasDefault: true });
                 }
             });
             ajaxPost({//是否显示
                 url: '/System/SysDict/GetDictByCode?strCode=ShowState',
                 success: function (result) {
-                    $('#IsShow').html(createRadioHtml({ data: result, name: 'IsShow', hasDefault: true }));
+                    $('#IsShow').createRadioHtml({ data: result, name: 'IsShow', hasDefault: true });
                 }
             });
         });

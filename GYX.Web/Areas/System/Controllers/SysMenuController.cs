@@ -70,12 +70,12 @@ namespace GYX.Web.Areas.System.Controllers
                 return listResult;
             if (rootData == null)
             {
-                List<int> listIds = source.Select(u => u.Id).ToList();
+                List<Guid> listIds = source.Select(u => u.Id).ToList();
                 rootData = source.Where(u => (!u.ParentId.HasValue) || (!listIds.Contains(u.ParentId.Value))).ToList();
             }
             foreach (var item in rootData)
             {
-                listChildren = SetDataIntoTree(source, source.Where(u => (u.ParentId ?? -1) == item.Id).ToList());
+                listChildren = SetDataIntoTree(source, source.Where(u => (u.ParentId ?? Guid.Empty) == item.Id).ToList());
                 if (listChildren.Count > 0)
                     listResult.Add(new
                     {
@@ -113,7 +113,7 @@ namespace GYX.Web.Areas.System.Controllers
             model.DataState = model.DataState ?? 0;
             model.IsShow = model.IsShow ?? true;
             model.IsUse = model.IsUse ?? true;
-            model.ParentId = model.ParentId ?? 0;
+            model.ParentId = model.ParentId ?? null;
             if (!model.OrderId.HasValue)
             {
                 var sonObjs = _menuService.List().Where(u => u.ParentId == model.ParentId).Select(u => u.OrderId);
@@ -131,7 +131,7 @@ namespace GYX.Web.Areas.System.Controllers
         /// </summary>
         public JsonResult Save(SysMenu model)
         {
-            if (model.Id == 0)
+            if (model.Id == Guid.Empty)
                 return Create(model);
             else
                 return Update(model);
@@ -172,7 +172,7 @@ namespace GYX.Web.Areas.System.Controllers
         /// <param name="ids"></param>
         /// <param name="withSon">是否包含子元素,默认不包含</param>
         /// <returns></returns>
-        public JsonResult Delete(int[] ids, bool withSon = false)
+        public JsonResult Delete(Guid[] ids, bool withSon = false)
         {
             bool boolResult = false;
             int successCount = 0;
@@ -208,7 +208,7 @@ namespace GYX.Web.Areas.System.Controllers
         /// <param name="parentId">父节点Id</param>
         /// <param name="arrChildIds">子节点Id</param>
         /// <returns>Result:true/false</returns>
-        public JsonResult ResetParnetAndSort(int parentId, int[] arrChildIds)
+        public JsonResult ResetParnetAndSort(Guid parentId, Guid[] arrChildIds)
         {
             bool boolResult = true;
             List<SysMenu> list = new List<SysMenu>();

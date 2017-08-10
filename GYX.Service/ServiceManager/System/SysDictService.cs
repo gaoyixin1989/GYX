@@ -19,7 +19,7 @@ namespace GYX.Service.ServiceManger.System
         /// <param name="ParentID">ParentID</param>
         /// <param name="withSelf">是否包含自身,默认false</param>
         /// <returns></returns>
-        public List<SysDict> GetSonByParentID(int ParentId, bool withSelf = false)
+        public List<SysDict> GetSonByParentID(Guid ParentId, bool withSelf = false)
         {
             if (withSelf)
                 return this._entityStore.Table.Where(u => (u.ParentId == ParentId || u.Id == ParentId) && (u.DataState ?? 0) !=1).OrderBy(u => u.OrderId).ToList();
@@ -34,7 +34,7 @@ namespace GYX.Service.ServiceManger.System
         /// <param name="ParentID">ParentID</param>
         /// <param name="isSelf">是否包含自身,默认false</param>
         /// <returns></returns>
-        public List<SysDict> GetAllSonByParentID(int ParentId, bool withSelf = false)
+        public List<SysDict> GetAllSonByParentID(Guid ParentId, bool withSelf = false)
         {
             List<SysDict> ResultList = new List<SysDict>();
             List<SysDict> firstSonList = new List<SysDict>();

@@ -10,6 +10,9 @@ using System.Web.Mvc;
 using GYX.Core.Helpers;
 using static GYX.Data.QueryBuilder;
 
+/// <summary>
+/// 信用卡管理
+/// </summary>
 namespace GYX.Web.Areas.Assets.Controllers
 {
 
@@ -31,7 +34,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(Guid? id)
         {
             ViewData["id"] = id;
             return View();
@@ -50,7 +53,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         /// 取现记录编辑页面
         /// </summary>
         /// <returns></returns>
-        public ActionResult TakeRecordEdit(int? id)
+        public ActionResult TakeRecordEdit(Guid? id)
         {
             ViewData["id"] = id;
             return View();
@@ -63,7 +66,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         /// 根据id获取数据
         /// </summary>
         /// <returns></returns>
-        public JsonResult GetDataById_CardInfo(int id)
+        public JsonResult GetDataById_CardInfo(Guid id)
         {
             var obj = _cardInfoService.FindById(id);
             return BackData(obj);
@@ -127,7 +130,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         /// </summary>
         public JsonResult Save_CardInfo(CreditCardInfo model)
         {
-            if (model.Id == 0)
+            if (model.Id == Guid.Empty)
                 return Create_CardInfo(model);
             else
                 return Update_CardInfo(model);
@@ -185,7 +188,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        public JsonResult Delete_CardInfo(int[] ids)
+        public JsonResult Delete_CardInfo(Guid[] ids)
         {
             SystemResult result = new SystemResult();
             int intSuccess = 0;
@@ -235,7 +238,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         /// <param name="ids"></param>
         /// <param name="isUse"></param>
         /// <returns></returns>
-        public ActionResult ResetIsUse_CardInfo(int[] ids, bool isUse = true)
+        public ActionResult ResetIsUse_CardInfo(Guid[] ids, bool isUse = true)
         {
             SystemResult result = new SystemResult();
             var objs = _cardInfoService.List().Where(u => ids.Contains(u.Id)).ToList();
@@ -257,7 +260,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         /// 根据id获取数据
         /// </summary>
         /// <returns></returns>
-        public JsonResult GetDataById_TakeRecord(int id)
+        public JsonResult GetDataById_TakeRecord(Guid? id)
         {
             var obj = _takeRecordService.FindById(id);
             return BackData(obj);
@@ -306,7 +309,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         public JsonResult Save_TakeRecor(CreditCardTakeRecord model)
         {
             //_takeRecordService
-            if (model.Id == 0)
+            if (model.Id == Guid.Empty)
                 return Create_TakeRecor(model);
             else
                 return Update_TakeRecor(model);
@@ -359,7 +362,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        public JsonResult Delete_TakeRecor(int[] ids)
+        public JsonResult Delete_TakeRecor(Guid[] ids)
         {
             SystemResult result = new SystemResult();
             int intSuccess = 0;

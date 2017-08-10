@@ -41,10 +41,29 @@ namespace GYX.Data
         /// <summary>
         /// 信用卡取现记录查询条件
         /// </summary>
-        public class CreditCardTakeRecordQueryBuilder {
+        public class CreditCardTakeRecordQueryBuilder
+        {
             public List<int?> CardId { get; set; }//信用卡
             public DateTime? TakeDate_start { get; set; }//取现日期
             public DateTime? TakeDate_end { get; set; }
+        }
+
+        /// <summary>
+        /// 账本记账查询条件
+        /// </summary>
+        public class AccountBookQueryBuilder
+        {
+            public AccountBookQueryBuilder()
+            {
+                this.DataState = new List<int?>() { 0 };
+            }
+            public List<int?> DataState { get; set; }//数据状态：0正常，1删除，默认0
+            public string BookName { get; set; }//归属账本（账本名称代号）
+            public string BillType { get; set; }//账单收支类型：支出、收入
+            public DateTime? PayTime_start { get; set; }//支付时间
+            public DateTime? PayTime_end { get; set; }//支付时间
+            public List<string> BillTypeIncome { get; set; }//收入类型
+            public List<string> BillTypeOutput { get; set; }//支出类型
         }
 
     }

@@ -8,49 +8,48 @@
         var id = '@ViewData["id"]';
 
         $(function () {
-            var addUseData = false;
-            var addUserComboData = false;
+            var getData = function () {
+                if (!!id) {
+                    ajaxPost({//加载数据
+                        url: '/Assets/CreditCard/GetDataById_TakeRecord',
+                        data: { id: id },
+                        success: function (data) {
+                            $("#UIForm").form('load', data);
+                        }
+                    });
+                }
+            }
+
+            initData(getData);
+
+        });
+
+        //初始化数据
+        //afterInitFn为初始化结束后执行方法
+        function initData(afterInitFn) {
+            var addIsUse = false;
             ajaxPost({//是否启用
                 url: '/System/SysDict/GetDictByCode?strCode=UseState',
                 success: function (result) {
-                    $('#IsUse').html(createRadioHtml({ data: result, name: 'IsUse', hasDefault: true }));
-                    addUseData = true;
+                    $('#IsUse').createRadioHtml({ data: result, name: 'IsUse', hasDefault: true });
+                    addIsUse = true;
                 }
             });
-            ////加载用户
-            //$('#UserId').combobox({
-            //    url: '/System/SysUser/GetDataForCombo',
-            //    panelHeight: 'auto',
-            //    height: 28,
-            //    width: 168,
-            //    onLoadSuccess: function () {
-            //        addUserComboData = true;
-            //    }
-            //});
 
-            var getData = function () {
+            var onAfterInit = function () {
                 setTimeout(function () {
-                    if (addUseData) {
-                            ajaxPost({//是否启用
-                                url: '/Assets/CreditCard/GetDataById_TakeRecord',
-                                data: { id: id },
-                                success: function (data) {
-                                    $("#UIForm").form('load', data);
-                                }
-                            });
-
+                    if (addIsUse) {
+                        if (afterInitFn != null && typeof (afterInitFn) == 'function') {
+                            afterInitFn.call(this);
+                        }
                     }
                     else {
-                        getData();
+                        onAfterInit();
                     }
                 }, 100);
-
             }
-            if (!!id) {
-                getData();
-            }
-
-        });
+            onAfterInit();
+        }
 
 
         function saveData() {
@@ -93,7 +92,9 @@
         </tr>
         <tr>
             <th>取现日期：</th>
-            <td><input type="text" name="TakeDate" class="Wdate input_text easyui-validatebox" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" data-options="required:true"  /></td>
+            <td>
+                <input type="text" name="TakeDate" class="Wdate input_text easyui-validatebox" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" data-options="required:true" />
+            </td>
         <tr>
             <th>金额：</th>
             <td><input type="text" name="TakeMoney" class="easyui-numberbox" data-options="required:true,min:0,precision:2,height:28,width:163,prefix:'￥'" /></td>

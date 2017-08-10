@@ -27,7 +27,7 @@ namespace GYX.Web.Areas.System.Controllers
         /// 根据id获取数据
         /// </summary>
         /// <returns></returns>
-        public JsonResult GetById(int id)
+        public JsonResult GetById(Guid id)
         {
             var obj = _dictService.FindById(id);
             return BackData(obj);
@@ -49,8 +49,10 @@ namespace GYX.Web.Areas.System.Controllers
         /// <summary>
         /// 获取菜单数据：easyui-tree数据格式
         /// </summary>
+        /// <param name="rootCode">指定根节点</param>
+        /// <param name="withRoot">是否包含根节点，rootCode值存在时才有效</param>
         /// <returns>easyui-tree数据格式json</returns>
-        public JsonResult GetTreeData()
+        public JsonResult GetTreeData(string rootCode, bool withRoot = true)
         {
             List<object> listResult = new List<object>();
             var condition = new { DataState = 0 };//查询条件
@@ -59,7 +61,22 @@ namespace GYX.Web.Areas.System.Controllers
             listData = listData.OrderBy(u => u.OrderId).ToList();
             //listResult = FunBase.SetDataToTree(listData.ToList<object>(), "Id", "ParentId", "Id", "DictText"
             //    , true, new string[] { });
-            listResult = SetDataIntoTree(listData, null);
+            var rootData = new List<SysDict>();
+            if (!string.IsNullOrEmpty(rootCode))
+            {
+                List<Guid> listIds = listData.Where(u => u.DictCode == rootCode).Select(u => u.Id).ToList();
+                if (withRoot)
+                    rootData = listData.Where(u => listIds.Contains(u.Id)).ToList();
+                else
+                {
+                    rootData = listData.Where(u => listIds.Contains(u.ParentId ?? Guid.Empty)).ToList();
+                }
+                listResult = SetDataIntoTree(listData, rootData);
+            }
+            else
+            {
+                listResult = SetDataIntoTree(listData, null);
+            }
             return BackData(listResult);
 
         }
@@ -67,7 +84,7 @@ namespace GYX.Web.Areas.System.Controllers
         /// 将数据转换为树结构
         /// </summary>
         /// <param name="source">源数据</param>
-        /// <param name="rootData">更节点（为null时自动取没有父节点的数据作为更节点）</param>
+        /// <param name="rootData">根节点（为null时自动取没有父节点的数据作为根节点）</param>
         /// <returns></returns>
         private List<object> SetDataIntoTree(List<SysDict> source, List<SysDict> rootData)
         {
@@ -77,12 +94,12 @@ namespace GYX.Web.Areas.System.Controllers
                 return listResult;
             if (rootData == null)
             {
-                List<int> listIds = source.Select(u => u.Id).ToList();
+                List<Guid> listIds = source.Select(u => u.Id).ToList();
                 rootData = source.Where(u => (!u.ParentId.HasValue) || (!listIds.Contains(u.ParentId.Value))).ToList();
             }
             foreach (var item in rootData)
             {
-                listChildren = SetDataIntoTree(source, source.Where(u => (u.ParentId ?? -1) == item.Id).ToList());
+                listChildren = SetDataIntoTree(source, source.Where(u => (u.ParentId ?? Guid.Empty) == item.Id).ToList());
                 if (listChildren.Count > 0)
                     listResult.Add(new
                     {
@@ -117,7 +134,8 @@ namespace GYX.Web.Areas.System.Controllers
                 return BackData(listResult);
 
             int intTotal = 0;
-            var parents = _dictService.GetForPaging(out intTotal, new { DataState = 0, IsUse = true, DictCode = strCode }).Select(u => (SysDict)u).ToList();
+            var parents = _dictService.GetForPaging(out intTotal, new { DataState = 0, IsUse = true, DictCode = strCode })
+                .Select(u => (SysDict)u).Where(u => u.DictCode == strCode).ToList();
 
             foreach (var itemP in parents)
             {
@@ -138,6 +156,69 @@ namespace GYX.Web.Areas.System.Controllers
             return BackData(listResult);
         }
 
+        /// <summary>
+        /// 获取菜单数据：easyui-tree数据格式
+        /// </summary>
+        /// <param name="strCode">指定根节点</param>
+        /// <returns>easyui-tree数据格式json</returns>
+        public JsonResult GetDictTreeByCode(string strCode)
+        {
+            List<object> listResult = new List<object>();
+            var condition = new { DataState = 0 };//查询条件
+            int intTotal = 0;
+            List<SysDict> listData = _dictService.GetForPaging(out intTotal, condition).Select(u => (SysDict)u).ToList();
+            listData = listData.OrderBy(u => u.OrderId).ToList();
+            //listResult = FunBase.SetDataToTree(listData.ToList<object>(), "Id", "ParentId", "Id", "DictText"
+            //    , true, new string[] { });
+            var rootData = new List<SysDict>();
+            List<Guid> listIds = listData.Where(u => u.DictCode == strCode).Select(u => u.Id).ToList();
+            rootData = listData.Where(u => listIds.Contains(u.ParentId ?? Guid.Empty)).ToList();
+
+            listResult = SetDataCodeIntoTree(listData, rootData);
+            return BackData(listResult);
+
+        }
+        /// <summary>
+        /// 将数据转换为树结构
+        /// </summary>
+        /// <param name="source">源数据</param>
+        /// <param name="rootData">根节点（为null时自动取没有父节点的数据作为根节点）</param>
+        /// <returns></returns>
+        private List<object> SetDataCodeIntoTree(List<SysDict> source, List<SysDict> rootData)
+        {
+            List<object> listResult = new List<object>();
+            List<object> listChildren = new List<object>();
+            if (source == null || source.Count < 1)
+                return listResult;
+            if (rootData == null)
+            {
+                List<Guid> listIds = source.Select(u => u.Id).ToList();
+                rootData = source.Where(u => (!u.ParentId.HasValue) || (!listIds.Contains(u.ParentId.Value))).ToList();
+            }
+            foreach (var item in rootData)
+            {
+                listChildren = SetDataCodeIntoTree(source, source.Where(u => (u.ParentId ?? Guid.Empty) == item.Id).ToList());
+                if (listChildren.Count > 0)
+                    listResult.Add(new
+                    {
+                        id = item.DictCode,
+                        text = item.DictText,
+                        state = "closed",
+                        @checked = item.IsDefalut ?? false,
+                        children = listChildren
+                    });
+                else
+                    listResult.Add(new
+                    {
+                        id = item.DictCode,
+                        text = item.DictText,
+                        @checked = item.IsDefalut ?? false
+                    });
+
+            }
+
+            return listResult;
+        }
         #endregion
 
         #region 编辑数据
@@ -154,7 +235,7 @@ namespace GYX.Web.Areas.System.Controllers
             model.IsDefalut = model.IsDefalut ?? false;
             model.IsUse = model.IsUse ?? true;
 
-            model.ParentId = model.ParentId ?? 0;
+            model.ParentId = model.ParentId ?? Guid.Empty;
             if (!model.OrderId.HasValue)
             {
                 var sonObjs = _dictService.List().Where(u => u.ParentId == model.ParentId).Select(u => u.OrderId);
@@ -172,7 +253,7 @@ namespace GYX.Web.Areas.System.Controllers
         /// </summary>
         public JsonResult Save(SysDict model)
         {
-            if (model.Id == 0)
+            if (model.Id == Guid.Empty)
                 return Create(model);
             else
                 return Update(model);
@@ -251,7 +332,7 @@ namespace GYX.Web.Areas.System.Controllers
         /// <param name="ids"></param>
         /// <param name="withSon">是否包含子元素，默认不包含</param>
         /// <returns></returns>
-        public JsonResult Delete(int[] ids, bool withSon = false)
+        public JsonResult Delete(Guid[] ids, bool withSon = false)
         {
             bool boolResult = false;
             int successCount = 0;
@@ -287,7 +368,7 @@ namespace GYX.Web.Areas.System.Controllers
         /// <param name="parentId">父节点Id</param>
         /// <param name="arrChildIds">子节点Id</param>
         /// <returns>Result:true/false</returns>
-        public JsonResult ResetParnetAndSort(int parentId, int[] arrChildIds)
+        public JsonResult ResetParnetAndSort(Guid parentId, Guid[] arrChildIds)
         {
             bool boolResult = true;
             List<SysDict> list = new List<SysDict>();

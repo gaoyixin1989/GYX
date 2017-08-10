@@ -22,7 +22,7 @@ namespace GYX.Web.Areas.System.Controllers
             return View();
         }
 
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(Guid? id)
         {
             ViewData["id"] = id;
             return View();
@@ -34,7 +34,7 @@ namespace GYX.Web.Areas.System.Controllers
         /// 根据id获取数据
         /// </summary>
         /// <returns></returns>
-        public JsonResult GetDataById(int id)
+        public JsonResult GetDataById(Guid id)
         {
             var obj = _userService.FindById(id);
             return BackData(obj);
@@ -90,7 +90,7 @@ namespace GYX.Web.Areas.System.Controllers
         /// </summary>
         public JsonResult Save(SysUser model)
         {
-            if (model.Id == 0)
+            if (model.Id == Guid.Empty)
                 return Create(model);
             else
                 return Update(model);
@@ -160,7 +160,7 @@ namespace GYX.Web.Areas.System.Controllers
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        public JsonResult Delete(int[] ids)
+        public JsonResult Delete(Guid[] ids)
         {
             SystemResult result = new SystemResult();
             int intSuccess = 0;
@@ -212,7 +212,7 @@ namespace GYX.Web.Areas.System.Controllers
         /// <param name="ids"></param>
         /// <param name="isUse"></param>
         /// <returns></returns>
-        public ActionResult ResetIsUse(int[] ids, bool isUse = true)
+        public ActionResult ResetIsUse(Guid[] ids, bool isUse = true)
         {
             SystemResult result = new SystemResult();
             var objs = _userService.List().Where(u => ids.Contains(u.Id)).ToList();
