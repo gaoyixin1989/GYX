@@ -58,8 +58,8 @@ namespace GYX.Data
                 this.DataState = new List<int?>() { 0 };
             }
             public List<int?> DataState { get; set; }//数据状态：0正常，1删除，默认0
-            public string BookName { get; set; }//归属账本（账本名称代号）
-            public string BillType { get; set; }//账单收支类型：支出、收入
+            public List<string> BookName { get; set; }//归属账本（账本名称代号）
+            public List<string> BillType { get; set; }//账单收支类型：支出、收入
             public DateTime? PayTime_start { get; set; }//支付时间
             public DateTime? PayTime_end { get; set; }//支付时间
             public List<string> BillTypeIncome { get; set; }//收入类型

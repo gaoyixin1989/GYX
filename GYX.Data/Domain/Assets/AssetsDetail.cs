@@ -15,7 +15,7 @@ namespace GYX.Data.Domain.Assets
         /// <summary>
         /// 资产表ID
         /// </summary>
-        public int? AssetsId { get; set; }
+        public Guid? AssetsId { get; set; }
         /// <summary>
         /// 名称
         /// </summary>

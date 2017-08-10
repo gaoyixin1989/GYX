@@ -59,6 +59,10 @@ namespace GYX.Web.Areas.Assets.Controllers
         /// <returns></returns>
         public JsonResult GetDataList(int pageIndex = 1, int pageSize = int.MaxValue, AccountBookQueryBuilder query = null)
         {
+            if (query.PayTime_start.HasValue)
+                query.PayTime_start = query.PayTime_start.Value.Date;
+            if (query.PayTime_end.HasValue)
+                query.PayTime_end = query.PayTime_end.Value.AddDays(1).Date.AddSeconds(-1);
             int count = 0;
             var listData = _accountBookService.GetForPaging(out count, query, pageIndex <= 0 ? 0 : (pageIndex - 1), pageSize).Select(u => (AccountBook)u).ToList();
 
@@ -77,7 +81,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         /// </summary>
         public JsonResult Save(AccountBook model)
         {
-            if (model.Id == Guid.Empty)
+            if (model.Id==Guid.Empty)
                 return Create(model);
             else
                 return Update(model);
@@ -89,6 +93,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         private JsonResult Create(AccountBook model)
         {
             SystemResult result = new SystemResult();
+            model.Id = Guid.NewGuid();
             model.CreateTime = DateTime.Now;
             model.DataState = model.DataState ?? 0;
 

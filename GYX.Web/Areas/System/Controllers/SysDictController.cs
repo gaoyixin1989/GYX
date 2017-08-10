@@ -265,6 +265,7 @@ namespace GYX.Web.Areas.System.Controllers
         private JsonResult Create(SysDict model)
         {
             SystemResult obj = new SystemResult();
+            model.Id = Guid.NewGuid();
             SetDefaultDataBeforeSave(model);
             obj.isSuccess = _dictService.Insert(model);
             if (obj.isSuccess)

@@ -297,7 +297,7 @@ $.fn.createRadioHtml = function (option) {
         var strHtml = '<label><input type="radio" name="' + option.name + '" value="' + item[option.DictCode] + '" /><span>' + item[option.DictText] + '</span></label>';
         var curObj = $(strHtml);
         if (option.OnClick != null) {
-            curObj.find('[type="radio"]').change(function () {
+            curObj.find('[type="radio"]').click(function () {
                 var value=curObj.find('[type="radio"]:checked').val();
                 option.OnClick.call(this, value);
             });
@@ -327,14 +327,18 @@ $.fn.createEasyuiComboboxByDictData = function (options) {
         height: 28,
         width: 163,
         multiple: false,
+        hasDefault: false,//是否选中默认值
         onLoadSuccess: function () {
-            var selectedValues = [];
-            $.each(options.data, function (i, item) {
-                if (item["IsDefalut"] == true) {
-                    selectedValues.push(item["DictCode"]);
-                }
-            });
-            $(this).combobox('setValues', selectedValues);
+            if (options.hasDefault) {
+                var selectedValues = [];
+                $.each(options.data, function (i, item) {
+                    if (item["IsDefalut"] == true) {
+                        selectedValues.push(item["DictCode"]);
+                    }
+                });
+                $(this).combobox('setValues', selectedValues);
+            }
+            
             if (options.onInitSuccess != null)
                 options.onInitSuccess.call(this);
         }
@@ -355,6 +359,7 @@ $.fn.createEasyuiCombotreeByDictData = function (options) {
         panelHeight: 'auto',
         height: 28,
         width: 163,
+        //hasDefault: false,//是否选中默认值
         onLoadSuccess: function () {
             var selectedValues = [];
             if (options.onInitSuccess != null)

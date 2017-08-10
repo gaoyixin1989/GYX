@@ -142,6 +142,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         private JsonResult Create_CardInfo(CreditCardInfo model)
         {
             SystemResult result = new SystemResult();
+            model.Id = Guid.NewGuid();
             model.CreateTime = DateTime.Now;
             model.UpdateTime = DateTime.Now;
             model.IsUse = model.IsUse ?? true;
@@ -321,6 +322,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         private JsonResult Create_TakeRecor(CreditCardTakeRecord model)
         {
             SystemResult result = new SystemResult();
+            model.Id = Guid.NewGuid();
             model.CreateTime = DateTime.Now;
             try
             {

@@ -77,8 +77,8 @@ namespace GYX.Web.Areas.System.Controllers
             int count = 0;
             var listData = _userService.GetForPaging(out count, query).Select(u => (SysUser)u).OrderBy(u => u.RealName).Select(t => new
             {
-                value=t.Id,
-                text=t.RealName
+                value = t.Id,
+                text = t.RealName
             }).ToList();
             return BackData(listData);
         }
@@ -102,6 +102,7 @@ namespace GYX.Web.Areas.System.Controllers
         private JsonResult Create(SysUser model)
         {
             SystemResult result = new SystemResult();
+            model.Id = Guid.NewGuid();
             model.CreateTime = DateTime.Now;
             model.UpdateTime = DateTime.Now;
             model.IsUse = model.IsUse ?? true;

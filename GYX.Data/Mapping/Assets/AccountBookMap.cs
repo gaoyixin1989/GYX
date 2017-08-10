@@ -16,6 +16,8 @@ namespace GYX.Data.Mapping.Assets
             this.Property(t => t.BillType).HasMaxLength(50);
             this.Property(t => t.CurrencyType).HasMaxLength(50);
             this.Property(t => t.Money).HasPrecision(18, 2);
+            this.Property(t => t.BillTypeIncome).HasMaxLength(50);
+            this.Property(t => t.BillTypeOutput).HasMaxLength(50);
 
             // Table & Column Mappings
             this.ToTable("AccountBook");

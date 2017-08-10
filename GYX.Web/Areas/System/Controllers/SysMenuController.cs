@@ -142,6 +142,7 @@ namespace GYX.Web.Areas.System.Controllers
         /// </summary>
         private JsonResult Create(SysMenu model)
         {
+            model.Id = Guid.NewGuid();
             SetDefaultDataBeforeSave(model);
             bool boolState = _menuService.Insert(model);
             return BackData(new { Result = boolState });

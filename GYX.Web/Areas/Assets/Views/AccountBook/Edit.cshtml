@@ -17,6 +17,12 @@
                         data: { id: id },
                         success: function (data) {
                             $("#UIForm").form('load', data);
+                            $('[name="BillType"][value="' + data.BillType + '"]').click();
+                            if (data.BillType == '支出')
+                                $('#BillTypeOutput').combotree('setValue', data.BillTypeOutput);
+                            else
+                                $('#BillTypeIncome').combotree('setValue', data.BillTypeIncome);
+                            $('#Money').numberbox({ prefix: data.CurrencyType});
                         }
                     });
                 }
@@ -25,7 +31,7 @@
             initData(getData);
 
         });
-        
+
         //初始化数据
         //afterInitFn为初始化结束后执行方法
         function initData(afterInitFn) {
@@ -57,6 +63,7 @@
                 success: function (result) {
                     $('#BookName').createEasyuiComboboxByDictData({
                         required: true,
+                        hasDefault: true,
                         data: result, onInitSuccess: function () {
                             addBookName = true;
                         }
@@ -71,20 +78,20 @@
                         data: result, name: 'BillType', hasDefault: true,
                         OnClick: function (value) {
                             if (curBillType != value) {
-                                //$('#BillTypeOutput').combotree('clear');
-                                //$('#BillTypeIncome').combotree('clear');
+                                $('#BillTypeOutput').combotree('clear');
+                                $('#BillTypeIncome').combotree('clear');
                                 $('#BillTypeOutput').combotree({ required: false });
                                 $('#BillTypeIncome').combotree({ required: false });
                                 curBillType = value;
                                 if (curBillType == '收入') {
                                     $('.BillTypeIncome').show();
                                     $('.BillTypeOutput').hide();
-                                    //$('#BillTypeIncome').combotree({ required: true });
+                                    $('#BillTypeIncome').combotree({ required: true });
                                 }
                                 else {
                                     $('.BillTypeIncome').hide();
                                     $('.BillTypeOutput').show();
-                                    //$('#BillTypeOutput').combotree({ required: true });
+                                    $('#BillTypeOutput').combotree({ required: true });
                                 }
                             }
                         }
@@ -107,7 +114,7 @@
                     addCurrencyType = true;
                 }
             });
-            
+
             var onAfterInit = function () {
                 setTimeout(function () {
                     if (addBookName && addBillType && addCurrencyType) {
@@ -162,7 +169,7 @@
             <td><input type="text" name="BookName" id="BookName" class="input_text" /></td>
             <th>支付时间：</th>
             <td>
-                <input type="text" name="PayTime" class="Wdate input_text easyui-validatebox" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" data-options="required:true" />
+                <input type="text" name="PayTime" class="Wdate input_text easyui-validatebox" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" data-options="required:true" />
             </td>
         </tr>
         <tr>

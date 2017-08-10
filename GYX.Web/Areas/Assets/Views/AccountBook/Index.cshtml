@@ -6,6 +6,9 @@
 @section Scripts{
     <script>
         $(function () {
+
+            initData();
+
             $('#dg').iDatagrid({
                 url: '/Assets/AccountBook/GetDataList',
                 onDblClickRow: function (index, row) {
@@ -43,6 +46,56 @@
             });
 
         });
+
+        function initData() {
+            //账本名称
+            ajaxPost({
+                url: '/System/SysDict/GetDictByCode?strCode=BookName',
+                success: function (result) {
+                    $('#BookName').createEasyuiComboboxByDictData({ data: result, multiple: true });
+                }
+            });
+            //账单类型
+            ajaxPost({
+                url: '/System/SysDict/GetDictByCode?strCode=BillType',
+                success: function (result) {
+                    $('#BillType').createEasyuiComboboxByDictData({
+                        data: result, multiple: true,
+                        onChange: function (newValue, oldValue) {
+                            $('.BillTypeOutput').show();
+                            $('.BillTypeIncome').show();
+                            if (newValue.length > 0) {
+                                if ($.inArray("支出", newValue) < 0) {
+                                    $('.BillTypeOutput').hide();
+                                    $('#BillTypeOutput').combotree('clear');
+                                }
+                                if ($.inArray("收入", newValue) < 0) {
+                                    $('.BillTypeIncome').hide();
+                                    $('#BillTypeIncome').combotree('clear');
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+
+            //支出类型
+            ajaxPost({
+                url: '/System/SysDict/GetDictTreeByCode?strCode=BillType_output',
+                success: function (result) {
+                    $('#BillTypeOutput').createEasyuiCombotreeByDictData({ data: result, multiple: true });
+                }
+            });
+            //收入类型
+            ajaxPost({
+                url: '/System/SysDict/GetDictTreeByCode?strCode=BillType_income',
+                success: function (result) {
+                    $('#BillTypeIncome').createEasyuiCombotreeByDictData({ data: result, multiple: true });
+                }
+            });
+
+
+        }
 
         //点击编辑
         function Edit(id) {
@@ -104,10 +157,32 @@
     <form id="searchForm">
         <table class="searchTable">
             <tr>
-                <td><span>归属：</span><input type="text" name="UserId" class="easyui-combobox" data-options="url:'/System/SysUser/GetDataForCombo',panelHeight:'auto',width:120,multiple:true" /></td>
-                <td><span>状态：</span><input type="text" name="IsUse" class="easyui-combobox" data-options="url:'/System/SysDict/GetDictByCode?strCode=UseState',valueField:'DictCode',textField:'DictText',panelHeight:'auto',width:120,multiple:true" /></td>
-                <td><span>卡名称：</span><input type="text" name="CardName" class="sr_input" /></td>
+                <td>
+                    <span>账本名称：</span>
+                    <input type="text" id="BookName" name="BookName" />
+                </td>
+                <td>
+                    <span>支付日期：</span>
+                    <input type="text" name="PayTime_start" class="Wdate sr_input" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+                    <span style="margin:0px 5px;">-</span>
+                    <input type="text" name="PayTime_end" class="Wdate sr_input" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+                </td>
                 <td><a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="Query()">查询</a></td>
+            </tr>
+        </table><table class="searchTable">
+            <tr>
+                <td>
+                    <span>账单类型：</span>
+                    <input type="text" id="BillType" name="BillType" />
+                </td>
+                <td class="BillTypeOutput">
+                    <span>支出类型：</span>
+                    <input type="text" id="BillTypeOutput" name="BillTypeOutput" />
+                </td>
+                <td class="BillTypeIncome">
+                    <span>收入类型：</span>
+                    <input type="text" id="BillTypeIncome" name="BillTypeIncome" />
+                </td>
             </tr>
         </table>
     </form>
