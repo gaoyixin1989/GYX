@@ -37,5 +37,8 @@ namespace GYX.Data.Domain.Assets
         /// </summary>
         public int? DataState { get; set; }
 
+        //外键
+        public virtual List<AssetsDetail> DetailList { get; set; }
+
     }
 }

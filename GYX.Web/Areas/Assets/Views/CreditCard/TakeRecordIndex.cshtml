@@ -17,10 +17,17 @@
                     { field: 'UserName', title: '归属', halign: 'center', align: 'center', width: 100 },
                     { field: 'CardName', title: '卡名称', halign: 'center', align: 'center', width: 100 },
                     { field: 'TakeDate', title: '取现日期', halign: 'center', align: 'center', width: 100 },
-                    { field: 'TakeMoney', title: '金额', halign: 'center', align: 'right', width: 80 },
-                    { field: 'Fee', title: '手续费', halign: 'center', align: 'right', width: 80 },
                     {
-                        field: 'Remark', title: '备注', halign: 'center', align: 'center', width:300, formatter: function (value, row, index) {
+                        field: 'TakeMoney', title: '金额', halign: 'center', align: 'right', width: 80, formatter: function (value, row, index) {
+                            return '¥' + value.toFixed(2);
+                        }
+                    },
+                    {
+                        field: 'Fee', title: '手续费', halign: 'center', align: 'right', width: 80, formatter: function (value, row, index) {
+                            return '¥' + value.toFixed(2);
+                        } },
+                    {
+                        field: 'Remark', title: '备注', halign: 'center', align: 'left', width:200, formatter: function (value, row, index) {
                             var text = value;
                             if (text == null) text = '';
                             return '<div class="textOneRow" title="' + text + '">' + text + '<div>';//style="width:300px;"

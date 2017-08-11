@@ -28,11 +28,16 @@
                     },
                     { field: 'PayTime', title: '支付时间', halign: 'center', align: 'center', width: 150 },
                     {
-                        field: 'Money', title: '金额', halign: 'center', align: 'center', width: 80, formatter: function (value, row, index) {
-                            return row.CurrencyType + row.Money;
+                        field: 'Money', title: '金额', halign: 'center', align: 'right', width: 80, formatter: function (value, row, index) {
+                            return row.CurrencyType + row.Money.toFixed(2);
                         }
                     },
-                    { field: 'Remark', title: '备注', halign: 'center', align: 'center', width: 80 },
+                    {
+                        field: 'Remark', title: '备注', halign: 'center', align: 'left', width: 200, formatter: function (value, row, index) {
+                            var text = value;
+                            if (text == null) text = '';
+                            return '<div class="textOneRow" title="' + text + '">' + text + '<div>';//style="width:300px;"
+                        } },
                     {
                         field: 'option', title: '操作', halign: 'center', align: 'center', formatter: function (value, row, index) {
                             var str = "<div class='option_col'>";

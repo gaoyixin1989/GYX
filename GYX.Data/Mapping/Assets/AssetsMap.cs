@@ -16,6 +16,9 @@ namespace GYX.Data.Mapping.Assets
 
             // Table & Column Mappings
             this.ToTable("Assets");
+
+            // 外键
+            this.HasMany(t => t.DetailList).WithOptional().HasForeignKey(t => t.AssetsId);
         }
     }
 }

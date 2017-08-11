@@ -1,8 +1,161 @@
 ﻿
 @{
-    ViewBag.Title = "资产信息";
+    ViewBag.Title = "资产统计";
     Layout = "~/Views/Shared/_Content.cshtml";
 }
+@section Scripts{
+<script src="~/Content/Scripts/extend/easyui/datagrid-detailview.js"></script>
+    <script>
+        $(function () {
 
-<h2>资产信息</h2>
+
+            $('#dg').iDatagrid({
+                url: '/Assets/Assets/GetDataList_Assets',
+                //onDblClickRow: function (index, row) {
+                //    Edit(row.Id);
+                //},
+                columns: [[
+                    //{ field: 'Id', checkbox: true },
+                    { field: 'StatisticsDate', title: '统计日期', halign: 'center', align: 'center', width: 100 },
+                    {
+                        field: 'Total', title: '总额', halign: 'center', align: 'right', width: 80, formatter: function (value, row, index) {
+                            return '¥' + value.toFixed(2);
+                        }
+                    },
+                    {
+                        field: 'Remark', title: '备注', halign: 'center', align: 'left', width: 200, formatter: function (value, row, index) {
+                            var text = value;
+                            if (text == null) text = '';
+                            return '<div class="textOneRow" title="' + text + '">' + text + '<div>';//style="width:300px;"
+                        }
+                    },
+                    {
+                        field: 'option', title: '操作', halign: 'center', align: 'center', formatter: function (value, row, index) {
+                            var str = "<div class='option_col'>";
+                            str += "<a href='#' onclick='Edit(\"" + row.Id + "\")'>编辑</a>|";
+                            str += "<a href='#' onclick='Del([\"" + row.Id + "\"])'>删除</a>";
+                            str += "</div> ";
+                            return str;
+                        }
+                    }
+                ]],
+                view: detailview,
+                detailFormatter: function (index, row) {
+                    return '<div style="padding:2px;position:relative;"><table class="ddv"></table></div>';
+                },
+                onExpandRow: function (index, row) {
+                    var ddv = $(this).datagrid('getRowDetail', index).find('table.ddv');
+                    ddv.datagrid({
+                        data: row.DetailList,
+                        //idField: 'Id',
+                        //pagination:false,
+                        fitColumns: true,
+                        singleSelect: true,
+                        rownumbers: true,
+                        loadMsg: '',
+                        height: 'auto',
+                        columns: [[
+                            { field: 'Name', title: '名称', halign: 'center', align: 'center', width: 100 },
+                            { field: 'Money', title: '金额', halign: 'center', align: 'right', width: 80},
+                            {field: 'Remark', title: '备注', halign: 'center', align: 'left',width:150}
+                        ]],
+                        onResize: function () {
+                            $('#dg').datagrid('fixDetailRowHeight', index);
+                        },
+                        onLoadSuccess: function () {
+                            setTimeout(function () {
+                                $('#dg').datagrid('fixDetailRowHeight', index);
+                            }, 0);
+                        }
+                    });
+                    $('#dg').datagrid('fixDetailRowHeight', index);
+                }
+            });
+
+        });
+        
+        //点击编辑
+        function Edit(id) {
+            doForm({
+                url: "/Assets/Assets/Edit?id=" + id,
+                width: 400,
+                height: 250,
+                afterSuccess: function (data) {
+                    $('#dg').datagrid('reload');
+                }
+            });
+        }
+        //点击删除
+        function Del(ids) {
+            if (ids.length > 0) {
+                top.$.messager.confirm('提示', '你确定要所选' + ids.length + '条数据吗？', function (r) {
+                    if (r) {
+                        ajaxPost({//是否启用
+                            url: '/Assets/Assets/Delete_Assets',
+                            data: { ids: ids },
+                            success: function (data) {
+                                if (data.isSuccess) {
+                                    $('#dg').datagrid('reload');
+                                    $.messager.alert('提示', data.message, 'info');
+                                }
+                                else {
+                                    $.messager.alert('提示', data.message, 'error');
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        //点击删除按钮
+        function Del_Btn() {
+            var rows = $('#dg').datagrid('getSelections');
+            var ids = getAttrByArr(rows, 'Id');
+            Del(ids);
+        }
+
+        //查询
+        function Query() {
+            var mm = top;
+            var dataForSave = $("#searchForm").formtojsonObj();
+
+            $('#dg').datagrid('load', dataForSave);
+        }
+
+    </script>
+}
+
+@section Css{
+    <style>
+    </style>
+}
+<table id="dg"></table>
+<div id="searchDiv" class="searchDiv">
+    <form id="searchForm">
+        <table class="searchTable">
+            <tr>
+                <td>
+                    <span>统计日期：</span>
+                    <input type="text" name="StatisticsDate_start" class="Wdate sr_input" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+                    <span style="margin:0px 5px;">-</span>
+                    <input type="text" name="StatisticsDate_end" class="Wdate sr_input" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+                </td>
+                <td><a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="Query()">查询</a></td>
+            </tr>
+        </table>
+    </form>
+    <table class="toolTable">
+        <tr>
+            <td>
+                <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="Edit()">新增</a>
+                <a href="javascript:void(0);#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="Del_Btn()">删除</a>
+            </td>
+            @*<td>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                </td>*@
+        </tr>
+    </table>
+</div>
+<div id="dd">Dialog Content.</div>
 

@@ -39,7 +39,7 @@
             var addBillTypeIncome = false;//收入类型
             var addBookName = false;//账本名称
             var addBillType = false;//账单类型
-            var addCurrencyType = false;//货币类型
+            //var addCurrencyType = false;//货币类型
 
 
             //支出类型
@@ -99,25 +99,25 @@
                     addBillType = true;
                 }
             });
-            //货币类型
-            ajaxPost({//货币类型
-                url: '/System/SysDict/GetDictByCode?strCode=CurrencyType',
-                success: function (result) {
-                    $('#CurrencyType').createRadioHtml({
-                        data: result, name: 'CurrencyType', hasDefault: true,
-                        OnClick: function (value) {
-                            $('#Money').numberbox({
-                                prefix: value
-                            });
-                        }
-                    });
-                    addCurrencyType = true;
-                }
-            });
+            ////货币类型
+            //ajaxPost({//货币类型
+            //    url: '/System/SysDict/GetDictByCode?strCode=CurrencyType',
+            //    success: function (result) {
+            //        $('#CurrencyType').createRadioHtml({
+            //            data: result, name: 'CurrencyType', hasDefault: true,
+            //            OnClick: function (value) {
+            //                $('#Money').numberbox({
+            //                    prefix: value
+            //                });
+            //            }
+            //        });
+            //        addCurrencyType = true;
+            //    }
+            //});
 
             var onAfterInit = function () {
                 setTimeout(function () {
-                    if (addBookName && addBillType && addCurrencyType) {
+                    if (addBookName && addBillType) {
                         if (afterInitFn != null&&typeof (afterInitFn) =='function' ) {
                             afterInitFn.call(this);
                         }
@@ -166,11 +166,8 @@
     <table class="tableList">
         <tr>
             <th>账本名称：</th>
-            <td><input type="text" name="BookName" id="BookName" class="input_text" /></td>
-            <th>支付时间：</th>
-            <td>
-                <input type="text" name="PayTime" class="Wdate input_text easyui-validatebox" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" data-options="required:true" />
-            </td>
+            <td colspan="3"><input type="text" name="BookName" id="BookName" class="input_text" /></td>
+
         </tr>
         <tr>
             <th>账单类型(收/支)：</th>
@@ -185,11 +182,15 @@
             </td>
         </tr>
         <tr>
-            <th>货币类型：</th>
-            <td id="CurrencyType"></td>
+            <th>支付时间：</th>
+            <td>
+                <input type="text" name="PayTime" class="Wdate input_text easyui-validatebox" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" data-options="required:true" />
+            </td>
+            @*<th>货币类型：</th>
+                <td id="CurrencyType"></td>*@
             <th>金额：</th>
             <td>
-                <input type="text" id="Money" name="Money" class="easyui-numberbox" data-options="required:true,min:0,precision:2,height:28,width:163" />
+                <input type="text" id="Money" name="Money" class="easyui-numberbox" data-options="required:true,min:0,precision:2,height:28,width:163,prefix:'¥'" />
             </td>
         </tr>
         <tr><th>备注：</th><td colspan="3"><textarea name="Remark" style="width:95%; height:80px;"></textarea></td></tr>

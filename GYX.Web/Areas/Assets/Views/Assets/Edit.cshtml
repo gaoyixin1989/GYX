@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewBag.Title = "记账编辑";
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+@section Scripts{
+    <script>
+        var id = '@ViewData["id"]';
+        var curBillType = '';
+
+        $(function () {
+
+            var getData = function () {
+                if (!!id) {
+                    ajaxPost({//加载数据
+                        url: '/Assets/Assets/GetDataById_Assets',
+                        data: { id: id },
+                        success: function (data) {
+                            $("#UIForm").form('load', data);
+                        }
+                    });
+                }
+            }
+
+            initData(getData);
+
+        });
+
+        //初始化数据
+        //afterInitFn为初始化结束后执行方法
+        function initData(afterInitFn) {
+            
+            var onAfterInit = function () {
+                setTimeout(function () {
+                    if (true) {
+                        if (afterInitFn != null&&typeof (afterInitFn) =='function' ) {
+                            afterInitFn.call(this);
+                        }
+                    }
+                    else {
+                        onAfterInit();
+                    }
+                },100);
+            }
+            onAfterInit();
+        }
+
+
+        function saveData() {
+            var temp = { isSuccess: false }
+            if (!$("#UIForm").form("validate")) {
+                return false;
+            }
+            var dataForSave = $("#UIForm").formtojsonObj();
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/Assets/Assets/Save_Assets",
+                data: dataForSave,
+                async: false,
+                success: function (data) {
+                    temp = data;
+                },
+                error: function () {
+                    temp.message = "ajax出错";
+                }
+            })
+            return temp;
+        }
+    </script>
+}
+
+@section Css{
+    <style>
+    </style>
+}
+
+<form id="UIForm">
+    <input id="Id" name="Id" class="hidden" />
+    <table class="tableList">
+        <tr>
+            <th>统计日期：</th>
+            <td>
+                <input type="text" name="StatisticsDate" class="Wdate input_text easyui-validatebox" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" data-options="required:true" />
+            </td>
+        </tr>
+        <tr><th>备注：</th><td><textarea name="Remark" style="width:95%; height:80px;"></textarea></td></tr>
+    </table>
+</form>
+

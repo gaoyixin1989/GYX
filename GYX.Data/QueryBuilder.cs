@@ -66,5 +66,19 @@ namespace GYX.Data
             public List<string> BillTypeOutput { get; set; }//支出类型
         }
 
+        /// <summary>
+        /// 资产统计查询
+        /// </summary>
+        public class AssetsQueryBuilder
+        {
+            public AssetsQueryBuilder()
+            {
+                this.DataState = new List<int?>() { 0 };
+            }
+            public List<int?> DataState { get; set; }//数据状态：0正常，1删除，默认0
+            public DateTime? StatisticsDate_start { get; set; }//统计日期
+            public DateTime? StatisticsDate_end { get; set; }//统计日期
+        }
+
     }
 }

@@ -1986,6 +1986,7 @@
     <Content Include="Content\Scripts\easyui-1.5.2\themes\metro\validatebox.css" />
     <Content Include="Content\Scripts\easyui-1.5.2\themes\metro\window.css" />
     <Content Include="Content\Scripts\easyui-1.5.2\themes\mobile.css" />
+    <Content Include="Content\Scripts\extend\easyui\datagrid-detailview.js" />
     <Content Include="Content\Scripts\extend\easyui\easyui-extend.css" />
     <Content Include="Content\Scripts\extend\easyui\easyui-extend.js" />
     <Content Include="Content\Scripts\extend\easyui\easyui-lang-zh_CN.js" />
@@ -2778,6 +2779,7 @@
     <Content Include="Areas\Assets\Views\CreditCard\TakeRecordIndex.cshtml" />
     <Content Include="Areas\Assets\Views\CreditCard\TakeRecordEdit.cshtml" />
     <Content Include="Areas\Assets\Views\AccountBook\Edit.cshtml" />
+    <Content Include="Areas\Assets\Views\Assets\Edit.cshtml" />
     <None Include="Project_Readme.html" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Shared\_Angular.cshtml" />
