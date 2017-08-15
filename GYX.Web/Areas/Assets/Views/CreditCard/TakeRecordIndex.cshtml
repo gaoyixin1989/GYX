@@ -25,9 +25,15 @@
                     {
                         field: 'Fee', title: '手续费', halign: 'center', align: 'right', width: 80, formatter: function (value, row, index) {
                             return '¥' + value.toFixed(2);
-                        } },
+                        }
+                    },
                     {
-                        field: 'Remark', title: '备注', halign: 'center', align: 'left', width:200, formatter: function (value, row, index) {
+                        field: 'HasBack', title: '归还', width: 50, halign: 'center', align: 'center', formatter: function (value, row, index) {
+                            return getStateImgStr(row.HasBack);
+                        }
+                    },
+                    {
+                        field: 'Remark', title: '备注', halign: 'center', align: 'left', width: 200, formatter: function (value, row, index) {
                             var text = value;
                             if (text == null) text = '';
                             return '<div class="textOneRow" title="' + text + '">' + text + '<div>';//style="width:300px;"
@@ -36,6 +42,9 @@
                     {
                         field: 'option', title: '操作', halign: 'center', align: 'center', formatter: function (value, row, index) {
                             var str = "<div class='option_col'>";
+                            if (!row.HasBack) {
+                                str += "<a href='#' onclick='GiveBack(\"" + row.Id + "\")'>归还</a>|";
+                            }
                             str += "<a href='#' onclick='Del([\"" + row.Id + "\"])'>删除</a>";
                             str += "</div> ";
                             return str;
@@ -60,7 +69,7 @@
         //点击删除
         function Del(ids) {
             if (ids.length > 0) {
-                top.$.messager.confirm('提示', '你确定要所选' + ids.length + '条数据吗？', function (r) {
+                top.$.messager.confirm('提示', '你确定要删除所选' + ids.length + '条数据吗？', function (r) {
                     if (r) {
                         ajaxPost({
                             url: '/Assets/CreditCard/Delete_TakeRecor',
@@ -84,6 +93,26 @@
             var rows = $('#dg').datagrid('getSelections');
             var ids = getAttrByArr(rows, 'Id');
             Del(ids);
+        }
+
+        function GiveBack(id) {
+                top.$.messager.confirm('提示', '你确定要归还所选记录吗？', function (r) {
+                    if (r) {
+                        ajaxPost({
+                            url: '/Assets/CreditCard/GiveBack_TakeRecor',
+                            data: { id: id },
+                            success: function (data) {
+                                if (data.isSuccess) {
+                                    $('#dg').datagrid('reload');
+                                }
+                                else {
+                                    $.messager.alert('提示', data.message, 'error');
+                                }
+                            }
+                        });
+                    }
+                });
+            
         }
 
         //查询

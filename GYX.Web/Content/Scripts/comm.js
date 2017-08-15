@@ -376,6 +376,7 @@ $.fn.createEasyuiCombotreeByDictData = function (options) {
 //返回打勾或打叉的img字符串
 function getStateImgStr(isOk) {
     var str = '';
+    isOk = isOk || false;
     if (isOk == true || isOk.toString().toLowerCase() == "true" || isOk == '1') {
         str = "<img src='/Content/Scripts/easyui/themes/icons/ok.png'></img>";
     }

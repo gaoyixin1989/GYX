@@ -38,6 +38,11 @@ namespace GYX.Data.Domain.Assets
         /// </summary>
         public string Remark { get; set; }
 
+        /// <summary>
+        /// 是否归还
+        /// </summary>
+        public bool? HasBack { get; set; }
+
         //外键
         public virtual CreditCardInfo CardObj { get; set; }//归属信用卡
 

@@ -292,6 +292,7 @@ namespace GYX.Web.Areas.Assets.Controllers
                     Fee = u.Fee,
                     u.CreateTime,
                     u.Remark,
+                    HasBack=u.HasBack??false,
                     CardName = u.CardObj?.CardName,
                     UserName = u.CardObj?.UserObj.RealName
                 }).ToList();
@@ -324,6 +325,7 @@ namespace GYX.Web.Areas.Assets.Controllers
             SystemResult result = new SystemResult();
             model.Id = Guid.NewGuid();
             model.CreateTime = DateTime.Now;
+            model.HasBack = model.HasBack ?? false;
             try
             {
                 if (_takeRecordService.Insert(model))
@@ -416,6 +418,21 @@ namespace GYX.Web.Areas.Assets.Controllers
                 result.isSuccess = false;
                 result.message = ex.Message;
             }
+            return BackData(result);
+        }
+
+        public JsonResult GiveBack_TakeRecor(Guid? id) {
+            SystemResult result = new SystemResult();
+            var obj = _takeRecordService.FindById(id);
+            obj.HasBack = true;
+            if (_takeRecordService.Update(obj))
+                result.isSuccess = true;
+            else
+            {
+                result.isSuccess = false;
+                result.message = "归还保存失败";
+            }
+
             return BackData(result);
         }
         #endregion

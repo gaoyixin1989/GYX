@@ -13,6 +13,18 @@ namespace GYX.Service.ServiceManger.Assets
 {
     public partial class CreditCardInfoService : BaseService<CreditCardInfo>, ICreditCardInfoService
     {
+        public override IEnumerable<dynamic> GetForPaging(out int count, object objs = null, int pageIndex = 0, int pageSize = int.MaxValue)
+        {
+            //var curTable = GetQueryTable(objs);
+            var curTable = this._entityStore.Table;
+            if (objs != null)
+            {
+                var exp = ExpressionFactory(objs);
+                curTable = curTable.Where(exp);
+            }
+
+            return new PagedList<CreditCardInfo>(curTable.OrderBy(c => c.RepaymentDay), pageIndex, pageSize, out count);
+        }
 
     }
 }
