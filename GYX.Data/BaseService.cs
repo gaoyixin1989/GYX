@@ -222,6 +222,26 @@ namespace GYX.Data
         {
             return this._entityStore.Count(exp);
         }
+
+        /// <summary>
+        /// 获取数据
+        /// </summary>
+        /// <param name="objs">查询条件</param>
+        /// <returns></returns>
+        public virtual IEnumerable<dynamic> Get(object objs = null)
+        {
+            if (objs != null)
+            {
+                var exp = ExpressionFactory(objs);
+                if (exp != null)
+                {
+                    var data = this._entityStore.Table.Where(exp);
+                    return data.OrderBy(p => "").ToList();
+                }
+            }
+            return this._entityStore.Table.OrderBy(p => "").ToList();
+        }
+
         /// <summary>
         /// 分页查询
         /// </summary>

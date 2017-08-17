@@ -114,3 +114,9 @@ textarea:focus{outline:none;box-shadow: 0 0 2px #076BF2;}
 }
 
 .textOneRow{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+
+.searchDiv{float:left; width:100%;}
+.searchDiv .toolTable{ float:left;}
+.searchDiv .otherTip{float:right;height: 26px;line-height: 26px;padding-right: 20px;}
+.searchDiv .otherTip .title{color:black; float:left;}
+.searchDiv .otherTip .value{ color:blue; float:right;}

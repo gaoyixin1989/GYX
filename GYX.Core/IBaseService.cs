@@ -21,6 +21,7 @@ namespace GYX.Core
         Task<T> FindByFeldNameAsync(Expression<Func<T, bool>> expfeldName);
         T FindById(object Id);
         List<T> FindByKeyValues(params object[] keyValues);
+        IEnumerable<dynamic> Get(object objs = null);
         IEnumerable<dynamic> GetForPaging(out int total, object objs = null, int pageIndex = 0, int pageSize = int.MaxValue);
         bool Insert(T entity);
         Task<bool> InsertAsync(T entity);

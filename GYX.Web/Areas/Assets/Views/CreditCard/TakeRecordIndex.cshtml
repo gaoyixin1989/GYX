@@ -12,6 +12,9 @@
                 //onDblClickRow: function (index, row) {
                 //    Edit(row.Id);
                 //},
+                onLoadSuccess: function (data) {
+                    $("#FeeTotal").html('¥'+data.FeeTotal);
+                },
                 columns: [[
                     { field: 'Id', checkbox: true },
                     { field: 'UserName', title: '归属', halign: 'center', align: 'center', width: 100 },
@@ -32,6 +35,8 @@
                             return getStateImgStr(row.HasBack);
                         }
                     },
+                    { field: 'BillDay', title: '账单日', halign: 'center', align: 'center', width: 80 },
+                    { field: 'RepaymentDay', title: '还款日', halign: 'center', align: 'center', width: 80 },
                     {
                         field: 'Remark', title: '备注', halign: 'center', align: 'left', width: 200, formatter: function (value, row, index) {
                             var text = value;
@@ -96,23 +101,23 @@
         }
 
         function GiveBack(id) {
-                top.$.messager.confirm('提示', '你确定要归还所选记录吗？', function (r) {
-                    if (r) {
-                        ajaxPost({
-                            url: '/Assets/CreditCard/GiveBack_TakeRecor',
-                            data: { id: id },
-                            success: function (data) {
-                                if (data.isSuccess) {
-                                    $('#dg').datagrid('reload');
-                                }
-                                else {
-                                    $.messager.alert('提示', data.message, 'error');
-                                }
+            top.$.messager.confirm('提示', '你确定要归还所选记录吗？', function (r) {
+                if (r) {
+                    ajaxPost({
+                        url: '/Assets/CreditCard/GiveBack_TakeRecor',
+                        data: { id: id },
+                        success: function (data) {
+                            if (data.isSuccess) {
+                                $('#dg').datagrid('reload');
                             }
-                        });
-                    }
-                });
-            
+                            else {
+                                $.messager.alert('提示', data.message, 'error');
+                            }
+                        }
+                    });
+                }
+            });
+
         }
 
         //查询
@@ -161,6 +166,7 @@
                 </td>*@
         </tr>
     </table>
+    <div class="otherTip"><span class="title">手续费总额：</span><div class="value" id="FeeTotal" style="width:50px;"></div></div>
 </div>
 <div id="dd">Dialog Content.</div>
 

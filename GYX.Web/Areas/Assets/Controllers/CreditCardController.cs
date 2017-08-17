@@ -294,13 +294,16 @@ namespace GYX.Web.Areas.Assets.Controllers
                     u.Remark,
                     HasBack=u.HasBack??false,
                     CardName = u.CardObj?.CardName,
-                    UserName = u.CardObj?.UserObj.RealName
+                    UserName = u.CardObj?.UserObj?.RealName,
+                    u.CardObj?.BillDay,
+                    u.CardObj?.RepaymentDay
                 }).ToList();
 
             return BackData(new
             {
                 total = count,
-                rows = listData
+                rows = listData,
+                FeeTotal = _takeRecordService.Get(query).Sum(u => (decimal)(u.Fee??0))
             });
         }
         #endregion
