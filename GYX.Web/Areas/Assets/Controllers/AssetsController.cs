@@ -38,7 +38,7 @@ namespace GYX.Web.Areas.Assets.Controllers
             ViewData["id"] = id;
             return View();
         }
-        
+
 
         #region 统计情况
         #region 数据查询
@@ -66,12 +66,12 @@ namespace GYX.Web.Areas.Assets.Controllers
             if (query.StatisticsDate_end.HasValue)
                 query.StatisticsDate_end = query.StatisticsDate_end.Value.AddDays(1).Date.AddSeconds(-1);
             int count = 0;
-            var listData = _assetsService.GetForPaging(out count, query, pageIndex <= 0 ? 0 : (pageIndex - 1), pageSize).Select(u => (AssetsTable)u).Select(u=>new {
+            var listData = _assetsService.GetForPaging(out count, query, pageIndex <= 0 ? 0 : (pageIndex - 1), pageSize).Select(u => (AssetsTable)u).Select(u => new
+            {
                 u.Id,
-                StatisticsDate=u.StatisticsDate.ToDateString("yyyy-MM-dd"),
-                u.Total,
-                u.Remark,
-                u.DetailList
+                StatisticsDate = u.StatisticsDate.ToDateString("yyyy-MM-dd"),
+                Total = u.DetailList.Sum(m => (decimal)(m.Money ?? 0)),
+                u.Remark
             }).ToList();
 
             return BackData(new
@@ -104,7 +104,6 @@ namespace GYX.Web.Areas.Assets.Controllers
             model.Id = Guid.NewGuid();
             model.CreateTime = DateTime.Now;
             model.UpdateTime = DateTime.Now;
-            model.Total = 0;
             model.DataState = model.DataState ?? 0;
 
             try
@@ -198,6 +197,15 @@ namespace GYX.Web.Areas.Assets.Controllers
         #endregion
 
         #region 统计明细
+        public JsonResult GetDataList_Detail(Guid? AssetsId)
+        {
+            var listData = _assetsService.FindById(AssetsId)?.DetailList;
+            return BackData(new
+            {
+                total = listData.Count(),
+                rows = listData
+            });
+        }
         #region 数据查询
         #endregion
         #region 数据编辑

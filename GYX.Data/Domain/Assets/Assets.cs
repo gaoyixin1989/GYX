@@ -21,10 +21,6 @@ namespace GYX.Data.Domain.Assets
         /// </summary>
         public DateTime? UpdateTime { get; set; }
         /// <summary>
-        /// 总额
-        /// </summary>
-        public decimal? Total { get; set; }
-        /// <summary>
         /// 统计日期
         /// </summary>
         public DateTime? StatisticsDate { get; set; }

@@ -10,9 +10,7 @@ namespace GYX.Data.Mapping.Assets
         {
             // Primary Key
             this.HasKey(t => t.Id);
-
-            // Properties
-            this.Property(t => t.Total).HasPrecision(18, 2);
+            
 
             // Table & Column Mappings
             this.ToTable("Assets");

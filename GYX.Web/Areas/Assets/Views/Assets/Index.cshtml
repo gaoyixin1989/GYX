@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Content.cshtml";
 }
 @section Scripts{
-<script src="~/Content/Scripts/extend/easyui/datagrid-detailview.js"></script>
+    <script src="~/Content/Scripts/extend/easyui/datagrid-detailview.js"></script>
     <script>
         $(function () {
 
@@ -46,7 +46,8 @@
                 onExpandRow: function (index, row) {
                     var ddv = $(this).datagrid('getRowDetail', index).find('table.ddv');
                     ddv.datagrid({
-                        data: row.DetailList,
+                        url: '/Assets/Assets/GetDataList_Detail?AssetsId=' + row.Id,
+                        //data: row.DetailList,
                         //idField: 'Id',
                         //pagination:false,
                         fitColumns: true,
@@ -56,8 +57,12 @@
                         height: 'auto',
                         columns: [[
                             { field: 'Name', title: '名称', halign: 'center', align: 'center', width: 100 },
-                            { field: 'Money', title: '金额', halign: 'center', align: 'right', width: 80},
-                            {field: 'Remark', title: '备注', halign: 'center', align: 'left',width:150}
+                            {
+                                field: 'Money', title: '金额', halign: 'center', align: 'right', width: 80, formatter: function (value, row, index) {
+                                    return '¥' + value.toFixed(2);
+                                }
+                            },
+                            { field: 'Remark', title: '备注', halign: 'center', align: 'left', width: 150 }
                         ]],
                         onResize: function () {
                             $('#dg').datagrid('fixDetailRowHeight', index);
@@ -73,7 +78,7 @@
             });
 
         });
-        
+
         //点击编辑
         function Edit(id) {
             doForm({
