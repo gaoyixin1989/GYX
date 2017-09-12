@@ -53,8 +53,10 @@
   <ItemGroup>
     <Compile Include="BaseService.cs" />
     <Compile Include="Domain\Assets\AccountBook.cs" />
+    <Compile Include="Domain\Assets\BorrowRecord.cs" />
     <Compile Include="Domain\Assets\CreditCardTakeRecord.cs" />
     <Compile Include="Domain\Assets\CreditCardInfo.cs" />
+    <Compile Include="Domain\Assets\HumanContact.cs" />
     <Compile Include="Domain\System\SysDict.cs" />
     <Compile Include="Domain\System\SysMenu.cs" />
     <Compile Include="Domain\Assets\AssetsDetail.cs" />
@@ -63,6 +65,8 @@
     <Compile Include="EfRepository.cs" />
     <Compile Include="IDbContext.cs" />
     <Compile Include="Mapping\Assets\AssetsDetailMap.cs" />
+    <Compile Include="Mapping\Assets\BorrowRecordMap.cs" />
+    <Compile Include="Mapping\Assets\HumanContactMap.cs" />
     <Compile Include="Mapping\Assets\CreditCardInfoMap.cs" />
     <Compile Include="Mapping\Assets\CreditCardTakeRecordMap.cs" />
     <Compile Include="Mapping\Assets\AssetsMap.cs" />

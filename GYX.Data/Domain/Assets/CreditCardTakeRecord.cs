@@ -39,9 +39,14 @@ namespace GYX.Data.Domain.Assets
         public string Remark { get; set; }
 
         /// <summary>
-        /// 是否归还
+        /// 是否已经还款
         /// </summary>
-        public bool? HasBack { get; set; }
+        public bool? HasReturn { get; set; }
+
+        /// <summary>
+        /// 还款日期
+        /// </summary>
+        public DateTime? ReturnDate { get; set; }
 
         //外键
         public virtual CreditCardInfo CardObj { get; set; }//归属信用卡

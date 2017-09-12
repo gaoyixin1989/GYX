@@ -49,8 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IServiceManger\Assets\IBorrowRecordService.cs" />
+    <Compile Include="IServiceManger\Assets\IHumanContactService.cs" />
     <Compile Include="IServiceManger\Assets\ICreditCardTakeRecordService.cs" />
     <Compile Include="IServiceManger\Assets\ICreditCardInfoService.cs" />
+    <Compile Include="ServiceManager\Assets\BorrowRecordService.cs" />
+    <Compile Include="ServiceManager\Assets\HumanContactService.cs" />
     <Compile Include="ServiceManager\Assets\CreditCardTakeRecordService.cs" />
     <Compile Include="ServiceManager\Assets\CreditCardInfoService.cs" />
     <Compile Include="ServiceManager\System\SysUserService.cs" />

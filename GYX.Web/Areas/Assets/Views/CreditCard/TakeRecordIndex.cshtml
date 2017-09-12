@@ -31,8 +31,8 @@
                         }
                     },
                     {
-                        field: 'HasBack', title: '归还', width: 50, halign: 'center', align: 'center', formatter: function (value, row, index) {
-                            return getStateImgStr(row.HasBack);
+                        field: 'HasReturn', title: '归还', width: 50, halign: 'center', align: 'center', formatter: function (value, row, index) {
+                            return getStateImgStr(row.HasReturn);
                         }
                     },
                     { field: 'BillDay', title: '账单日', halign: 'center', align: 'center', width: 80 },
@@ -47,7 +47,7 @@
                     {
                         field: 'option', title: '操作', halign: 'center', align: 'center', formatter: function (value, row, index) {
                             var str = "<div class='option_col'>";
-                            if (!row.HasBack) {
+                            if (!row.HasReturn) {
                                 str += "<a href='#' onclick='GiveBack(\"" + row.Id + "\")'>归还</a>|";
                             }
                             str += "<a href='#' onclick='Del([\"" + row.Id + "\"])'>删除</a>";

@@ -292,7 +292,8 @@ namespace GYX.Web.Areas.Assets.Controllers
                     Fee = u.Fee,
                     u.CreateTime,
                     u.Remark,
-                    HasBack=u.HasBack??false,
+                    HasReturn = u.HasReturn ?? false,
+                    ReturnDate = u.ReturnDate.ToDateString("yyyy-MM-dd"),
                     CardName = u.CardObj?.CardName,
                     UserName = u.CardObj?.UserObj?.RealName,
                     u.CardObj?.BillDay,
@@ -303,7 +304,7 @@ namespace GYX.Web.Areas.Assets.Controllers
             {
                 total = count,
                 rows = listData,
-                FeeTotal = _takeRecordService.Get(query).Sum(u => (decimal)(u.Fee??0))
+                FeeTotal = _takeRecordService.Get(query).Sum(u => (decimal)(u.Fee ?? 0))
             });
         }
         #endregion
@@ -328,7 +329,7 @@ namespace GYX.Web.Areas.Assets.Controllers
             SystemResult result = new SystemResult();
             model.Id = Guid.NewGuid();
             model.CreateTime = DateTime.Now;
-            model.HasBack = model.HasBack ?? false;
+            model.HasReturn = model.HasReturn ?? false;
             try
             {
                 if (_takeRecordService.Insert(model))
@@ -424,10 +425,17 @@ namespace GYX.Web.Areas.Assets.Controllers
             return BackData(result);
         }
 
-        public JsonResult GiveBack_TakeRecor(Guid? id) {
+        /// <summary>
+        /// 归还信用卡
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult GiveBack_TakeRecor(Guid? id)
+        {
             SystemResult result = new SystemResult();
             var obj = _takeRecordService.FindById(id);
-            obj.HasBack = true;
+            obj.HasReturn = true;
+            obj.ReturnDate = DateTime.Now.Date;
             if (_takeRecordService.Update(obj))
                 result.isSuccess = true;
             else
