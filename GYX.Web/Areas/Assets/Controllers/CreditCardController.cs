@@ -116,7 +116,7 @@ namespace GYX.Web.Areas.Assets.Controllers
                 IsUse = true
             };
             int count = 0;
-            var listData = _cardInfoService.GetForPaging(out count, query).Select(u => (CreditCardInfo)u).OrderBy(u => u.CardName).Select(t => new
+            var listData = _cardInfoService.GetForPaging(out count, query).Select(u => (CreditCardInfo)u).OrderBy(u=>u.UserObj.RealName).ThenBy(u => u.CardName).Select(t => new
             {
                 value = t.Id,
                 text = t.UserObj.RealName + "_" + t.CardName

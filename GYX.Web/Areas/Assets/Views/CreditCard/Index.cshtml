@@ -27,6 +27,13 @@
                         }
                     },
                     {
+                        field: 'Remark', title: '备注', halign: 'center', align: 'left', width: 200, formatter: function (value, row, index) {
+                            var text = value;
+                            if (text == null) text = '';
+                            return '<div class="textOneRow" title="' + text + '">' + text + '<div>';//style="width:300px;"
+                        }
+                    },
+                    {
                         field: 'option', title: '操作', halign: 'center', align: 'center', formatter: function (value, row, index) {
                             var str = "<div class='option_col'>";
                             str += "<a href='#' onclick='Edit(\"" + row.Id + "\")'>编辑</a>|";

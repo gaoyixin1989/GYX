@@ -23,7 +23,7 @@ namespace GYX.Service.ServiceManger.Assets
                 curTable = curTable.Where(exp);
             }
 
-            return new PagedList<CreditCardInfo>(curTable.OrderBy(c => c.RepaymentDay), pageIndex, pageSize, out count);
+            return new PagedList<CreditCardInfo>(curTable.OrderBy(c=>c.UserObj.RealName).ThenBy(c => c.RepaymentDay), pageIndex, pageSize, out count);
         }
 
     }
