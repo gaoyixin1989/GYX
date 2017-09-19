@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// 借还记录
+/// </summary>
 namespace GYX.Data.Domain.Assets
 {
     public partial class BorrowRecord

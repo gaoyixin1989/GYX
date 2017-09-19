@@ -116,7 +116,7 @@ namespace GYX.Web.Areas.Assets.Controllers
                 IsUse = true
             };
             int count = 0;
-            var listData = _cardInfoService.GetForPaging(out count, query).Select(u => (CreditCardInfo)u).OrderBy(u=>u.UserObj.RealName).ThenBy(u => u.CardName).Select(t => new
+            var listData = _cardInfoService.GetForPaging(out count, query).Select(u => (CreditCardInfo)u).OrderBy(u => u.UserObj.RealName).ThenBy(u => u.CardName).Select(t => new
             {
                 value = t.Id,
                 text = t.UserObj.RealName + "_" + t.CardName
@@ -304,7 +304,8 @@ namespace GYX.Web.Areas.Assets.Controllers
             {
                 total = count,
                 rows = listData,
-                FeeTotal = _takeRecordService.Get(query).Sum(u => (decimal)(u.Fee ?? 0))
+                FeeTotal = _takeRecordService.Get().Sum(u => (decimal)(u.Fee ?? 0)),
+                CurMoney = _takeRecordService.Get(new { HasReturn = false }).Sum(u => (decimal)(u.TakeMoney ?? 0))
             });
         }
         #endregion

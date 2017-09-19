@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// 人情记录
+/// </summary>
 namespace GYX.Data.Domain.Assets
 {
     public partial class HumanContact

@@ -31,7 +31,7 @@ namespace GYX.Data
         /// </summary>
         public class CreditCardInfoQueryBuilder
         {
-            public List<int?> UserId { get; set; }//归属用户ID
+            public List<Guid?> UserId { get; set; }//归属用户ID
             public string CardName { get; set; }//卡名称
             public string CardNo { get; set; }//卡号
 
@@ -43,7 +43,7 @@ namespace GYX.Data
         /// </summary>
         public class CreditCardTakeRecordQueryBuilder
         {
-            public List<int?> CardId { get; set; }//信用卡
+            public List<Guid?> CardId { get; set; }//信用卡
             public DateTime? TakeDate_start { get; set; }//取现日期
             public DateTime? TakeDate_end { get; set; }
         }

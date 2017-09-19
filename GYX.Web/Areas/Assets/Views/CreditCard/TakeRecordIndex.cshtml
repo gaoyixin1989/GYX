@@ -13,7 +13,8 @@
                 //    Edit(row.Id);
                 //},
                 onLoadSuccess: function (data) {
-                    $("#FeeTotal").html('¥'+data.FeeTotal);
+                    $("#FeeTotal").html('¥' + data.FeeTotal);
+                    $("#CurMoney").html('¥' + data.CurMoney);
                 },
                 columns: [[
                     { field: 'Id', checkbox: true },
@@ -166,7 +167,12 @@
                 </td>*@
         </tr>
     </table>
-    <div class="otherTip"><span class="title">手续费总额：</span><div class="value" id="FeeTotal" style="width:50px;"></div></div>
+    <div class="otherTip">
+        <span class="title">当前欠款：</span>
+        <div class="value" id="CurMoney"></div>
+        <span class="title">手续费总额：</span>
+        <div class="value" id="FeeTotal"></div>
+    </div>
 </div>
 <div id="dd">Dialog Content.</div>
 
