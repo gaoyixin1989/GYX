@@ -1,24 +1,28 @@
 ﻿
 @{
-    ViewBag.Title = "资产统计编辑";
+    ViewBag.Title = "资产统计明细编辑";
     Layout = "~/Views/Shared/_Content.cshtml";
 }
 @section Scripts{
     <script>
-        var id = '@ViewData["id"]';
+        var AssetsId = '@ViewData["AssetsId"]';
+        var DetailId = '@ViewData["DetailId"]';
         var curBillType = '';
 
         $(function () {
 
             var getData = function () {
-                if (!!id) {
+                if (!!DetailId) {
                     ajaxPost({//加载数据
-                        url: '/Assets/Assets/GetDataById_Assets',
-                        data: { id: id },
+                        url: '/Assets/Assets/GetDataById_Detail',
+                        data: { id: DetailId },
                         success: function (data) {
                             $("#UIForm").form('load', data);
                         }
                     });
+                }
+                else if (!!AssetsId) {
+                    $('#AssetsId').val(AssetsId);
                 }
             }
 
@@ -29,7 +33,7 @@
         //初始化数据
         //afterInitFn为初始化结束后执行方法
         function initData(afterInitFn) {
-            
+
             var onAfterInit = function () {
                 setTimeout(function () {
                     if (true) {
@@ -56,7 +60,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "/Assets/Assets/Save_Assets",
+                url: "/Assets/Assets/Save_Detail",
                 data: dataForSave,
                 async: false,
                 success: function (data) {
@@ -78,12 +82,15 @@
 
 <form id="UIForm">
     <input id="Id" name="Id" class="hidden" />
+    <input id="AssetsId" name="AssetsId" class="hidden" />
     <table class="tableList">
         <tr>
-            <th>统计日期：</th>
-            <td>
-                <input type="text" name="StatisticsDate" class="Wdate input_text easyui-validatebox" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" data-options="required:true" />
-            </td>
+            <th>名称：</th>
+            <td><input type="text" name="Name" class="easyui-validatebox input_text" data-options="required:true" /></td>
+        </tr>
+        <tr>
+            <th>金额：</th>
+            <td><input type="text" name="Money" class="easyui-numberbox" data-options="required:true,min:0,precision:2,height:28,width:163,prefix:'￥'" /></td>
         </tr>
         <tr><th>备注：</th><td><textarea name="Remark" style="width:95%; height:80px;"></textarea></td></tr>
     </table>

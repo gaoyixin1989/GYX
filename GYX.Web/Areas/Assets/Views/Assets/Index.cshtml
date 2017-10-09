@@ -5,6 +5,7 @@
 }
 @section Scripts{
     <script src="~/Content/Scripts/extend/easyui/datagrid-detailview.js"></script>
+    <script src="~/Content/Scripts/extend/easyui/jquery.edatagrid.js"></script>
     <script>
         $(function () {
 
@@ -33,7 +34,8 @@
                         field: 'option', title: '操作', halign: 'center', align: 'center', formatter: function (value, row, index) {
                             var str = "<div class='option_col'>";
                             str += "<a href='#' onclick='Edit(\"" + row.Id + "\")'>编辑</a>|";
-                            str += "<a href='#' onclick='Del([\"" + row.Id + "\"])'>删除</a>";
+                            str += "<a href='#' onclick='Del([\"" + row.Id + "\"])'>删除</a>|";
+                            str += "<a href='#' onclick='AddDetail(\"" + index + "\",\"" + row.Id + "\")'>添加明细</a>";
                             str += "</div> ";
                             return str;
                         }
@@ -44,8 +46,9 @@
                     return '<div style="padding:2px;position:relative;"><table class="ddv"></table></div>';
                 },
                 onExpandRow: function (index, row) {
+                    var fatherIndex = index;
                     var ddv = $(this).datagrid('getRowDetail', index).find('table.ddv');
-                    ddv.datagrid({
+                    ddv.edatagrid({
                         url: '/Assets/Assets/GetDataList_Detail?AssetsId=' + row.Id,
                         //data: row.DetailList,
                         //idField: 'Id',
@@ -55,14 +58,32 @@
                         rownumbers: true,
                         loadMsg: '',
                         height: 'auto',
+                        onSave: function (index, row) {
+                            alert(JSON.stringify(row));
+                        },
                         columns: [[
-                            { field: 'Name', title: '名称', halign: 'center', align: 'center', width: 100 },
+                            { field: 'Name', title: '名称', halign: 'center', align: 'center', width: 100, editor: { type: 'validatebox', options: { required: true } } },
                             {
-                                field: 'Money', title: '金额', halign: 'center', align: 'right', width: 80, formatter: function (value, row, index) {
-                                    return '¥' + value.toFixed(2);
+                                field: 'Money', title: '金额', halign: 'center', align: 'right', width: 80, editor: { type: 'numberbox', options: { required: true, min: 0, precision: 2, prefix: '￥' } }, formatter: function (value, row, index) {
+                                    return '¥' + parseFloat(value).toFixed(2);
                                 }
                             },
-                            { field: 'Remark', title: '备注', halign: 'center', align: 'left', width: 150 }
+                            {
+                                field: 'Remark', title: '备注', halign: 'center', align: 'left', width: 150, editor: "text", formatter: function (value, row, index) {
+                                    var text = value;
+                                    if (text == null) text = '';
+                                    return '<div class="textOneRow" title="' + text + '">' + text + '<div>';
+                                }
+                            },
+                            {
+                                field: 'option', title: '操作', halign: 'center', align: 'center', formatter: function (value, row, index) {
+                                    var str = "<div class='option_col'>";
+                                    str += "<a href='#' onclick='EditDetail(\"" + row.Id + "\")'>编辑</a>|";
+                                    str += "<a href='#' onclick='DelDetail(\"" + fatherIndex + "\",\"" + row.Id + "\")'>删除</a>";
+                                    str += "</div> ";
+                                    return str;
+                                }
+                            }
                         ]],
                         onResize: function () {
                             $('#dg').datagrid('fixDetailRowHeight', index);
@@ -79,10 +100,15 @@
 
         });
 
+
         //点击编辑
         function Edit(id) {
+            var title = '新增';
+            if (id)
+                title = '编辑'
             doForm({
                 url: "/Assets/Assets/Edit?id=" + id,
+                title: title + '统计',
                 width: 400,
                 height: 250,
                 afterSuccess: function (data) {
@@ -125,6 +151,60 @@
             var dataForSave = $("#searchForm").formtojsonObj();
 
             $('#dg').datagrid('load', dataForSave);
+        }
+
+        //添加明细
+        //id：统计id
+        function AddDetail(fatherIndex, id) {
+            var ddv = $('#dg').datagrid('getRowDetail', fatherIndex).find('table.ddv');
+            ddv.edatagrid('addRow', { row: { AssetsId: id }});
+            $('#dg').datagrid('fixDetailRowHeight', fatherIndex);
+            console.log(ddv);
+
+
+            //doForm({
+            //    url: "/Assets/Assets/EditDetail?AssetsId=" + id,
+            //    title: '新增明细',
+            //    width: 400,
+            //    height: 300,
+            //    afterSuccess: function (data) {
+            //        $('#dg').datagrid('reload');
+            //    }
+            //});
+        }
+        //编辑明细
+        //id：明细id
+        function EditDetail(id) {
+            doForm({
+                url: "/Assets/Assets/EditDetail?DetailId=" + id,
+                title: '编辑明细',
+                width: 400,
+                height: 300,
+                afterSuccess: function (data) {
+                    $('#dg').datagrid('reload');
+                }
+            });
+        }
+        function DelDetail(fatherIndex,id) {
+            var ddv = $('#dg').datagrid('getRowDetail', fatherIndex).find('table.ddv');
+            ddv.edatagrid('destroyRow');
+            //top.$.messager.confirm('提示', '你确定要删除所选数据吗？', function (r) {
+            //    if (r) {
+            //        ajaxPost({//是否启用
+            //            url: '/Assets/Assets/Delete_Detail',
+            //            data: { ids: [id] },
+            //            success: function (data) {
+            //                if (data.isSuccess) {
+            //                    $('#dg').datagrid('reload');
+            //                    $.messager.alert('提示', data.message, 'info');
+            //                }
+            //                else {
+            //                    $.messager.alert('提示', data.message, 'error');
+            //                }
+            //            }
+            //        });
+            //    }
+            //});
         }
 
     </script>

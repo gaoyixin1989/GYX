@@ -1974,6 +1974,7 @@
     <Content Include="Content\Scripts\extend\easyui\images\collapse.png" />
     <Content Include="Content\Scripts\extend\easyui\images\expand.png" />
     <Content Include="Content\Scripts\extend\easyui\images\tree_icons.png" />
+    <Content Include="Content\Scripts\extend\easyui\jquery.edatagrid.js" />
     <Content Include="Content\Scripts\extend\easyui\treegrid-dnd.js" />
     <Content Include="Content\Scripts\html5shiv.js" />
     <Content Include="Content\Scripts\jquery-1.8.3.min.js" />
@@ -2758,6 +2759,7 @@
     <Content Include="Areas\Assets\Views\CreditCard\TakeRecordEdit.cshtml" />
     <Content Include="Areas\Assets\Views\AccountBook\Edit.cshtml" />
     <Content Include="Areas\Assets\Views\Assets\Edit.cshtml" />
+    <Content Include="Areas\Assets\Views\Assets\EditDetail.cshtml" />
     <None Include="Project_Readme.html" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Shared\_Angular.cshtml" />
