@@ -297,7 +297,9 @@ namespace GYX.Web.Areas.Assets.Controllers
                     CardName = u.CardObj?.CardName,
                     UserName = u.CardObj?.UserObj?.RealName,
                     u.CardObj?.BillDay,
-                    u.CardObj?.RepaymentDay
+                    u.CardObj?.RepaymentDay,
+                    BillDate= GetBillDate(u.TakeDate.Value,u.CardObj?.BillDay).ToDateString("yyyy-MM-dd"),
+                    RepaymentDate = GetRepaymentDate(u.TakeDate.Value, u.CardObj?.BillDay, u.CardObj?.RepaymentDay).ToDateString("yyyy-MM-dd")
                 }).ToList();
 
             return BackData(new
@@ -308,6 +310,10 @@ namespace GYX.Web.Areas.Assets.Controllers
                 CurMoney = _takeRecordService.Get(new { HasReturn = false }).Sum(u => (decimal)(u.TakeMoney ?? 0))
             });
         }
+
+
+
+
         #endregion
         #region 数据编辑
         /// <summary>
@@ -449,5 +455,89 @@ namespace GYX.Web.Areas.Assets.Controllers
         }
         #endregion
         #endregion
+
+        /// <summary>
+        /// 计算账单日日期
+        /// </summary>
+        /// <param name="takeDate">取现日期</param>
+        /// <param name="BillDay">账单日</param>
+        /// <returns></returns>
+        private DateTime? GetBillDate(DateTime takeDate, int? billDay)
+        {
+
+            if (billDay.HasValue && billDay > 0)
+            {
+                DateTime theDate = new DateTime();
+                #region 计算账单日
+                if (takeDate.Day <= billDay)
+                {
+                    if (!DateTime.TryParse(string.Format("{0}-{1}-{2}", takeDate.Year, takeDate.Month, billDay), out theDate))
+                    {
+                        theDate = new DateTime(takeDate.AddMonths(1).Year, takeDate.AddMonths(1).Month, 1).AddDays(-1);
+                    }
+                }
+                else
+                {
+                    if (!DateTime.TryParse(string.Format("{0}-{1}-{2}", takeDate.AddMonths(1).Year, takeDate.AddMonths(1).Month, billDay), out theDate))
+                    {
+                        theDate = new DateTime(takeDate.AddMonths(2).Year, takeDate.AddMonths(2).Month, 1).AddDays(-1);
+                    }
+                }
+                #endregion
+                return theDate;
+            }
+            else return null;
+        }
+
+        /// <summary>
+        /// 计算还款日期
+        /// </summary>
+        /// <param name="takeDate">取现日期</param>
+        /// <param name="BillDay">账单日</param>
+        /// <param name="RepaymentDay">还款日</param>
+        /// <returns></returns>
+        private DateTime? GetRepaymentDate(DateTime takeDate, int? billDay, int? repaymentDay)
+        {
+
+            if (billDay.HasValue && repaymentDay.HasValue && billDay > 0 && repaymentDay > 0)
+            {
+                DateTime theDate = new DateTime();
+                theDate = GetBillDate(takeDate, billDay) ?? new DateTime();
+                //#region 计算账单日
+                //if (takeDate.Day <= billDay)
+                //{
+                //    if (!DateTime.TryParse(string.Format("{0}-{1}-{2}", takeDate.Year, takeDate.Month, billDay), out theDate))
+                //    {
+                //        theDate = new DateTime(takeDate.AddMonths(1).Year, takeDate.AddMonths(1).Month, 1).AddDays(-1);
+                //    }
+                //}
+                //else
+                //{
+                //    if (!DateTime.TryParse(string.Format("{0}-{1}-{2}", takeDate.AddMonths(1).Year, takeDate.AddMonths(1).Month, billDay), out theDate))
+                //    {
+                //        theDate = new DateTime(takeDate.AddMonths(2).Year, takeDate.AddMonths(2).Month, 1).AddDays(-1);
+                //    }
+                //}
+                //#endregion
+                #region 计算还款日
+                if (theDate.Day < repaymentDay)
+                {
+                    if (!DateTime.TryParse(string.Format("{0}-{1}-{2}", theDate.Year, theDate.Month, repaymentDay), out theDate))
+                    {
+                        theDate = new DateTime(theDate.AddMonths(1).Year, theDate.AddMonths(1).Month, 1).AddDays(-1);
+                    }
+                }
+                else
+                {
+                    if (!DateTime.TryParse(string.Format("{0}-{1}-{2}", theDate.AddMonths(1).Year, theDate.AddMonths(1).Month, repaymentDay), out theDate))
+                    {
+                        theDate = new DateTime(theDate.AddMonths(2).Year, theDate.AddMonths(2).Month, 1).AddDays(-1);
+                    }
+                }
+                #endregion
+                return theDate;
+            }
+            else return null;
+        }
     }
 }

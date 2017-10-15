@@ -27,6 +27,10 @@ namespace GYX.Web.Areas.Assets.Controllers
         {
             return View();
         }
+        public ActionResult Index2()
+        {
+            return View();
+        }
 
         /// <summary>
         /// 统计编辑

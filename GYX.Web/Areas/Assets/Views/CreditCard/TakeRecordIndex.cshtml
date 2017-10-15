@@ -20,7 +20,7 @@
                     { field: 'Id', checkbox: true },
                     { field: 'UserName', title: '归属', halign: 'center', align: 'center', width: 100 },
                     { field: 'CardName', title: '卡名称', halign: 'center', align: 'center', width: 100 },
-                    { field: 'TakeDate', title: '取现日期', halign: 'center', align: 'center', width: 100 },
+                    { field: 'TakeDate', title: '取现日期', halign: 'center', align: 'center', width: 90 },
                     {
                         field: 'TakeMoney', title: '金额', halign: 'center', align: 'right', width: 80, formatter: function (value, row, index) {
                             return '¥' + value.toFixed(2);
@@ -36,8 +36,8 @@
                             return getStateImgStr(row.HasReturn);
                         }
                     },
-                    { field: 'BillDay', title: '账单日', halign: 'center', align: 'center', width: 80 },
-                    { field: 'RepaymentDay', title: '还款日', halign: 'center', align: 'center', width: 80 },
+                    { field: 'BillDate', title: '账单日', halign: 'center', align: 'center', width: 90 },
+                    { field: 'RepaymentDate', title: '还款日', halign: 'center', align: 'center', width: 90 },
                     {
                         field: 'Remark', title: '备注', halign: 'center', align: 'left', width: 200, formatter: function (value, row, index) {
                             var text = value;
