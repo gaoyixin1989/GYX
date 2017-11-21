@@ -2762,8 +2762,8 @@
     <Content Include="Areas\Assets\Views\Assets\EditDetail.cshtml" />
     <Content Include="Areas\Assets\Views\Assets\Index2.cshtml" />
     <None Include="Project_Readme.html" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Shared\_Angular.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GYX.Core\GYX.Core.csproj">

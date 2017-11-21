@@ -22,7 +22,7 @@ namespace GYX.Service.ServiceManger.System
         public List<SysDict> GetSonByParentID(Guid ParentId, bool withSelf = false)
         {
             if (withSelf)
-                return this._entityStore.Table.Where(u => (u.ParentId == ParentId || u.Id == ParentId) && (u.DataState ?? 0) !=1).OrderBy(u => u.OrderId).ToList();
+                return this._entityStore.Table.Where(u => (u.ParentId == ParentId || u.Id == ParentId) && (u.DataState ?? 0) != 1).OrderBy(u => u.OrderId).ToList();
             else
                 return this._entityStore.Table.Where(u => u.ParentId == ParentId && (u.DataState ?? 0) != 1).OrderBy(u => u.OrderId).ToList();
 
@@ -50,6 +50,17 @@ namespace GYX.Service.ServiceManger.System
             }
 
             return ResultList;
+        }
+
+        /// <summary>
+        /// 根据Code获取子节点数据
+        /// </summary>
+        /// <param name="Code"></param>
+        /// <returns></returns>
+        public List<SysDict> GetSonByCode(string Code)
+        {
+            var result = this._entityStore.Table.Where(u => u.Parent.DictCode == Code && u.IsUse == true).ToList();
+            return result;
         }
     }
 }

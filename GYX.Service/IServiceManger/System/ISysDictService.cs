@@ -22,5 +22,12 @@ namespace GYX.Service.IServiceManger.System
         /// <param name="isSelf">是否包含自身,默认false</param>
         /// <returns></returns>
         List<SysDict> GetAllSonByParentID(Guid ParentId, bool withSelf = false);
+
+        /// <summary>
+        /// 根据Code获取子节点数据
+        /// </summary>
+        /// <param name="Code"></param>
+        /// <returns></returns>
+        List<SysDict> GetSonByCode(string Code);
     }
 }

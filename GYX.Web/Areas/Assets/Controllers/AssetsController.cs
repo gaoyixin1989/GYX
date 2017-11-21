@@ -1,7 +1,9 @@
 ﻿using GYX.Core.Helpers;
 using GYX.Data.Domain.Assets;
 using GYX.Service.IServiceManger.Assets;
+using GYX.Service.IServiceManger.System;
 using GYX.Service.ServiceManger.Assets;
+using GYX.Service.ServiceManger.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,7 @@ namespace GYX.Web.Areas.Assets.Controllers
     {
         IAssetsService _assetsService = new AssetsService();
         IAssetsDetailService _detailService = new AssetsDetailService();
+        ISysDictService _dictService = new SysDictService();
         // GET: Assets
         /// <summary>
         /// 资产统计
@@ -39,6 +42,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         /// <returns></returns>
         public ActionResult Edit(Guid? id)
         {
+
             ViewData["id"] = id;
             return View();
         }
@@ -125,7 +129,18 @@ namespace GYX.Web.Areas.Assets.Controllers
             try
             {
                 if (_assetsService.Insert(model))
+                {
                     result.isSuccess = true;
+                    var dictList = _dictService.GetSonByCode("AssetsStatistic");
+                    foreach (var dict in dictList)
+                    {
+                        AssetsDetail detail = new AssetsDetail();
+                        detail.Id = Guid.NewGuid();
+                        detail.AssetsId = model.Id;
+                        detail.Name = dict.DictText;
+                        _detailService.Insert(detail);
+                    }
+                }
                 else
                 {
                     result.isSuccess = false;
@@ -213,7 +228,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         #endregion
 
         #region 统计明细
-        
+
 
         #region 数据查询
         /// <summary>
@@ -234,7 +249,7 @@ namespace GYX.Web.Areas.Assets.Controllers
         /// <returns></returns>
         public JsonResult GetDataList_Detail(Guid? AssetsId)
         {
-            var listData = _assetsService.FindById(AssetsId)?.DetailList;
+            var listData = _assetsService.FindById(AssetsId)?.DetailList.OrderBy(u => u.Money);
             return BackData(new
             {
                 total = listData.Count(),

@@ -17,6 +17,8 @@ namespace GYX.Data.Mapping.System
 
             // Table & Column Mappings
             this.ToTable("SysDict");
+
+            this.HasOptional(a => a.Parent).WithMany().HasForeignKey(a=>a.ParentId);
         }
     }
 }

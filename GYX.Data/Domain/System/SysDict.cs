@@ -52,5 +52,7 @@ namespace GYX.Data.Domain.System
         /// ±¸×¢
         /// </summary>
         public string Remark { get; set; }
+
+        public virtual SysDict Parent { get; set; }
     }
 }
