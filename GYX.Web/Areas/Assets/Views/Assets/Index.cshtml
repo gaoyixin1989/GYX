@@ -182,7 +182,7 @@
         }
         function DelDetail(fatherIndex,id) {
             var ddv = $('#dg').datagrid('getRowDetail', fatherIndex).find('table.ddv');
-            ddv.edatagrid('destroyRow');
+            //ddv.edatagrid('destroyRow');
 
             top.$.messager.confirm('提示', '你确定要删除所选数据吗？', function (r) {
                 if (r) {
