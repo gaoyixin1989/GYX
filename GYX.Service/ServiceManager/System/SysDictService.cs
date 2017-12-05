@@ -59,7 +59,7 @@ namespace GYX.Service.ServiceManger.System
         /// <returns></returns>
         public List<SysDict> GetSonByCode(string Code)
         {
-            var result = this._entityStore.Table.Where(u => u.Parent.DictCode == Code && u.IsUse == true).ToList();
+            var result = this._entityStore.Table.Where(u => u.Parent.DictCode == Code && (u.DataState ?? 0) != 1 && u.IsUse == true).ToList();
             return result;
         }
     }

@@ -95,7 +95,7 @@ $.fn.iDatagrid = function (options) {
         pagination: true,            //是否分页
         striped: true,              //是否显示斑马线效果
         remoteSort: false,          //是否从服务器对数据进行排序
-        pageList: [10, 15, 20, 30, 50],
+        pageList: [10, 20, 30, 50, 100],
         onBeforeLoad: function (param) {
             param.pageIndex = param.page;
             param.pageSize = param.rows;

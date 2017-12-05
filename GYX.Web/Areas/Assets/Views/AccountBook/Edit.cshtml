@@ -22,7 +22,9 @@
                                 $('#BillTypeOutput').combotree('setValue', data.BillTypeOutput);
                             else
                                 $('#BillTypeIncome').combotree('setValue', data.BillTypeIncome);
-                            $('#Money').numberbox({ prefix: data.CurrencyType});
+                            if (data.CurrencyType != null && data.CurrencyType != '') {
+                                $('#Money').numberbox({ prefix: data.CurrencyType });
+                            }
                         }
                     });
                 }
